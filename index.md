@@ -8,6 +8,8 @@ Feel free to use the material in these slides or in the folders. If you find thi
 
 ### Slides Stéphanie
 
+1. [Introduction to modelling](assets/pdf/Portet_2024_1_2.pdf)
+
 ### Slides Patrick
 
 See the slides [here](assets/pdf/3MC_school_2024_Patrick.pdf).
