@@ -10,7 +10,7 @@ Feel free to use the material in these slides or in the folders. If you find thi
 
 ### Slides Patrick
 
-See the slide [here](assets/pdf/3MC_school_2024_Patrick.pdf).
+See the slides [here](assets/pdf/3MC_school_2024_Patrick.pdf).
 
 ### Slides Jacek
 
