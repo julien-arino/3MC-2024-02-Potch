@@ -8,7 +8,7 @@ library(EpiCurve)
 source("functions_useful.R")
 ma <- function(x, n = 7){stats::filter(x, rep(1 / n, n), sides = 2)}
 
-REFRESH_DATA = TRUE
+REFRESH_DATA = FALSE
 REPROCESS_DATA = TRUE
 PDF_OR_PNG = "pdf"
 ALL_PLOTS = FALSE
@@ -70,9 +70,9 @@ if (REFRESH_DATA) {
   ###
   ### Save the result
   ###
-  saveRDS(DATA, file = "DATA/COVID-19-data_raw.Rds")
+  saveRDS(DATA, file = "DATA/COVID-19-data-raw.Rds")
 } else {
-  DATA = readRDS(file = "DATA/COVID-19-data_raw.Rds")
+  DATA = readRDS(file = "DATA/COVID-19-data-raw.Rds")
 }
 
 if (REPROCESS_DATA) {
@@ -109,9 +109,9 @@ if (REPROCESS_DATA) {
   ###
   ### Save the result
   ###
-  saveRDS(DATA, file = "DATA/COVID-19-data_raw.Rds")
+  saveRDS(DATA, file = "DATA/COVID-19-data-processed.Rds")
 } else {
-  DATA = readRDS(file = "DATA/COVID-19-data_raw.Rds")
+  DATA = readRDS(file = "DATA/COVID-19-data-processed.Rds")
 }
 
 
