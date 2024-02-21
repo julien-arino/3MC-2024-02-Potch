@@ -44,9 +44,9 @@ error_incidence <- function(p_vary,
   } else {
     R0 = params$beta / params$gamma
   }
-  if (R0<1) {
-    return(Inf)
-  }
+  # if (R0<1) {
+  #   return(Inf)
+  # }
   # I0 is the I that gives us the incidence we are matching in the data.
   # This depends on the type of incidence function used
   if (params$MA) {
@@ -93,9 +93,7 @@ error_incidence <- function(p_vary,
   return(error)
 }
 
-plot_solution = function(params, GA, data_incidence) {
-  params$beta = GA@solution[1]
-  params$gamma = GA@solution[2]
+plot_solution = function(params, data_incidence) {
   S0 = params$pop
   # I0 is the I that gives us the incidence we are matching in the data.
   # This depends on the type of incidence function used
@@ -168,7 +166,7 @@ params = list()
 params$gamma = 1/3.5   # Let's see if we can fit with this simple value
 # Are we using mass action incidence (classic) or standard 
 # incidence
-params$MA = FALSE
+params$MA = TRUE
 # Add population data to this, for convenience
 params$pop = pop_YWG
 # An initial estimate of beta based on R0=1.5. Not useful anywhere
@@ -193,15 +191,30 @@ GA = ga(
                      method = "rk4"),
   parallel = TRUE,
   lower = c(ifelse(params$MA, 1e-5, 0.1), 1/14),
-  upper = c(ifelse(params$MA, 1e-2, 1), 1/2),
-  pcrossover = 0.7,
-  pmutation = 0.2,
+  upper = c(ifelse(params$MA, 1e-2, 10), 1/2),
   optim = TRUE,
-  optimArgs = list(method = "CG"),
   suggestions = c(params$beta, params$gamma),
   popSize = 200,
   maxiter = 100
 )
 
+params$beta = GA@solution[1]
+params$gamma = GA@solution[2]
+plot_solution(params, peak2)
 
-plot_solution(params, GA, peak2)
+
+# m1 = 
+#   optim(par = c(params$beta, params$gamma),
+#         fn = function(x)
+#           error_incidence(p_vary = c(beta = x[1], gamma = x[2]),
+#                           params = params,
+#                           incidence_data = peak2,
+#                           method = "rk4"),
+#         method='L-BFGS-B', 
+#         gr = NULL,
+#         lower = c(ifelse(params$MA, 1e-5, 0.1), 1/14), 
+#         upper = c(ifelse(params$MA, 1e-2, 10), 1/2))
+# 
+# params$beta = m1$par[1]
+# params$gamma = m1$par[2]
+# plot_solution(params, peak2)
