@@ -76,7 +76,7 @@ if (REFRESH_DATA) {
 }
 
 if (REPROCESS_DATA) {
-  DATA = readRDS(file = "DATA/COVID-19-data_raw.Rds")
+  DATA = readRDS(file = "DATA/COVID-19-data-raw.Rds")
   ###
   ### Some post-load processing
   ###

@@ -6,14 +6,6 @@ On the [GitHub version](https://github.com/julien-arino/3MC-2024-02-Potch/) of t
 
 Feel free to use the material in these slides or in the folders. If you find this useful, we will be happy to know.
 
-### Slides Stéphanie
-
-1. [Introduction to modelling](assets/pdf/Portet_2024_1_2.pdf)
-
-### Slides Patrick
-
-See the slides [here](assets/pdf/3MC_school_2024_Patrick.pdf).
-
 ### Slides Jacek
 
 ### Slides James
@@ -39,3 +31,12 @@ Please note that at present, the slides are work in progress. I will be updating
 </ul>
 
 I have some "vignettes" about `R` [here](https://julien-arino.github.io/R-for-modellers/). Beware, some of them are not finished yet.
+
+### Slides Patrick
+
+See the slides [here](assets/pdf/3MC_school_2024_Patrick.pdf).
+
+### Slides Stéphanie
+
+1. [Introduction to modelling](assets/pdf/Portet_2024_1_2.pdf)
+
