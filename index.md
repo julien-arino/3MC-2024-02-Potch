@@ -38,3 +38,4 @@ Please note that at present, the slides are work in progress. I will be updating
 {% endfor %}
 </ul>
 
+I have some "vignettes" about `R` [here](https://julien-arino.github.io/R-for-modellers/). Beware, some of them are not finished yet.
