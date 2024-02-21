@@ -38,6 +38,12 @@ data_subset = data %>%
   filter(date > paste0(beg_year,"-12-15")) %>%
   filter(date <= ymd(paste0(end_year,"-04-30")))
 
+# To do work, we will need the total population of France
+pop_data_FRA <- wb_data(country = "FRA", indicator = "SP.POP.TOTL",
+                        mrv = 100, return_wide = FALSE) %>%
+  filter(date == beg_year)
+
+
 plot(data_subset$date, data_subset[[which_incidence]],
      type = "b",
      xlab = "Month", ylab = "Incidence",

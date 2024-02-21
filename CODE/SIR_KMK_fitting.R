@@ -1,13 +1,24 @@
 library(lubridate)
 library(dplyr)
-library(wbstats)
+library(readr)
 library(deSolve)
 library(GA)
 library(parallel)
+library(doParallel)
 
-# The RHS function for KMK
+# The RHS function for KMK with mass action incidence
 RHS_KMK_SIR <- function(t, x, p) {
   with(as.list(c(x,p)), {
+    dS <- -beta*S*I
+    dI <- beta*S*I-gamma*I
+    dR <- gamma*I
+    return(list(c(dS, dI, dR)))
+  })
+}
+
+# The RHS function for KMK with standard incidence
+RHS_KMK_SIR_standard <- function(t, x, p) {
+  with(as.list(c(x, p)), {
     dS <- -beta*S*I/pop
     dI <- beta*S*I/pop-gamma*I
     dR <- gamma*I
@@ -20,94 +31,177 @@ RHS_KMK_SIR <- function(t, x, p) {
 error_incidence <- function(p_vary, 
                             params, 
                             incidence_data,
-                            method = "rk4",
-                            which_incidence = "inc100") {
+                            method = "rk4") {
   # Anything that changes during optimisation needs to be set here
   params$beta = as.numeric(p_vary["beta"])
   params$gamma = as.numeric(p_vary["gamma"])
-  # Check value of R0. If it is less than 1, no need to compute ODE solution,
-  # just return Inf
-  R0 = params$beta / params$gamma
+  S0 = params$pop
+  # Check value of R0. 
+  # If it is less than 1, no need to compute ODE solution, 
+  # return Inf. Of course, this depends on incidence.
+  if (params$MA) {
+    R0 = S0 * params$beta / params$gamma
+  } else {
+    R0 = params$beta / params$gamma
+  }
   if (R0<1) {
     return(Inf)
   }
-  # I0 is the I that gives us the incidence we are matching in the data. Since
-  # incidence=beta*S*I/N, we have
-  # I(0) = incidence*N/(beta*S(0)) ~= incidence/beta
-  S0 = params$pop
-  I0 = data_subset[[which_incidence]][1]/(params$beta)
+  # I0 is the I that gives us the incidence we are matching in the data.
+  # This depends on the type of incidence function used
+  if (params$MA) {
+    # We are using mass action incidence. Then, since
+    # incidence=beta*S*I, we have
+    # I(0) = incidence/(beta*S(0))
+    I0 = incidence_data$cases[1]/(params$beta*S0)
+  } else {
+    # We are using standard incidence. Then, since
+    # incidence=beta*S*I/N, we have
+    # I(0) = incidence*N/(beta*S(0)) ~= incidence/beta
+    I0 = incidence_data$cases[1]/params$beta
+  }
   IC = c(S = S0, I = I0, R = 0)
   # The times at which we compute the solution to compare with data
-  times = as.numeric(as.Date(incidence_data$date))
-  sol = ode(IC, times, RHS_KMK_SIR, params, method = method)
+  times = as.numeric(incidence_data$date)
+  if (params$MA) {
+    sol = ode(IC, times, RHS_KMK_SIR, params, 
+              method = method)
+  } else {
+    sol = ode(IC, times, RHS_KMK_SIR_standard, params, 
+              method = method)
+  }
   # Error checking
   if (sol[dim(sol)[1],"time"] < times[length(times)]) {
     return(Inf)
   }
   # Values required to compute the error
-  incidence_from_run = params$beta * sol[,"S"] * sol[,"I"] / params$pop
+  if (params$MA) {
+    # We are using mass action incidence. Then
+    # incidence=beta*S*I, we have
+    incidence_from_run = 
+      params$beta * sol[,"S"] * sol[,"I"]
+  } else {
+    # We are using standard incidence. Then
+    # incidence=beta*S*I/N, we have
+    incidence_from_run = 
+      params$beta * sol[,"S"] * sol[,"I"] / params$pop
+  }
   # Compute the error
-  diff_values = incidence_data[[which_incidence]] - incidence_from_run
+  diff_values = incidence_data$cases - incidence_from_run
   diff_values_squared = diff_values^2
   error = sum(diff_values_squared)
   return(error)
 }
 
-
-# To do work, we will need the total population of France
-pop_data_FRA <- wb_data(country = "FRA", indicator = "SP.POP.TOTL",
-                        mrv = 100, return_wide = FALSE) %>%
-  filter(date == beg_year)
-# For numerical reasons, we might work per 100K people.. Detect this.
-if (grepl("100", which_incidence)) {
-  pop_data_FRA = pop_data_FRA$value / 100000
-} else {
-  pop_data_FRA = pop_data_FRA$value
+plot_solution = function(params, GA, data_incidence) {
+  params$beta = GA@solution[1]
+  params$gamma = GA@solution[2]
+  S0 = params$pop
+  # I0 is the I that gives us the incidence we are matching in the data.
+  # This depends on the type of incidence function used
+  if (params$MA) {
+    # We are using mass action incidence. Then, since
+    # incidence=beta*S*I, we have
+    # I(0) = incidence/(beta*S(0))
+    I0 = incidence_data$cases[1]/(params$beta*S0)
+  } else {
+    # We are using standard incidence. Then, since
+    # incidence=beta*S*I/N, we have
+    # I(0) = incidence*N/(beta*S(0)) ~= incidence/beta
+    I0 = incidence_data$cases[1]/params$beta
+  }
+  IC = c(S = S0, I = I0, R = 0)
+  dates_num = as.numeric(data_incidence$date)
+  times = seq(dates_num[1], dates_num[length(dates_num)], 0.1)
+  if (params$MA) {
+    sol <- ode(IC, times, RHS_KMK_SIR, params)
+    # We are using mass action incidence. Then
+    # incidence=beta*S*I, we have
+    sol_incidence = 
+      params$beta * sol[,"S"] * sol[,"I"]
+  } else {
+    sol <- ode(IC, times, RHS_KMK_SIR_standard, params)
+    # We are using standard incidence. Then
+    # incidence=beta*S*I/N, we have
+    sol_incidence = 
+      params$beta * sol[,"S"] * sol[,"I"] / params$pop
+  }
+  y_max = max(max(sol_incidence), 
+              max(incidence_data$cases))
+  # Plot the result
+  plot(sol[,"time"], sol_incidence, type = "l",
+       xlab = "Date", ylab = "Incidence",
+       xaxt = "n", lwd = 2, col = "red",
+       ylim = c(0, y_max))
+  lines(as.numeric(data_incidence$date), 
+        incidence_data$cases,
+        type = "b")
+  dates_pretty = pretty(dates_num)
+  axis(1, at = dates_pretty, 
+       labels = as.Date(dates_pretty, origin="1970-01-01"))
 }
+
+
+pop_YWG = 750000
+
+# We select on the relevant columns in the data
+data = read_csv("DATA/Winnipeg-SARS-CoV-2.csv") %>%
+  select(date, cases)
+
+# We want to work on only one outbreak,  we need to find out
+# when it happens. So first we plot things...
+plot(data$date, data$cases, type = "l")
+# Let's zoom in the three main peaks... (This is by trial
+# and error)
+peak1 = data %>%
+  filter(date >= "2020-09-15" & date <= "2021-02-28") 
+plot(peak1$date, peak1$cases)
+peak2 = data %>%
+  filter(date >= "2021-03-28" & date <= "2021-07-15") 
+plot(peak2$date, peak2$cases)
+peak3 = data %>%
+  filter(date >= "2021-12-01" & date <= "2022-03-01") 
+# plot(peak3$date, peak3$cases)
+
 
 params = list()
 params$gamma = 1/3.5   # Let's see if we can fit with this simple value
-# R0=beta/gamma, so beta=R0*gamma
-params$beta = 1.5*params$gamma
+# Are we using mass action incidence (classic) or standard 
+# incidence
+params$MA = FALSE
 # Add population data to this, for convenience
-params$pop = pop_data_FRA
+params$pop = pop_YWG
+# An initial estimate of beta based on R0=1.5. Not useful anywhere
+# except to debug. Depends on the incidence type, of course.
+if (params$MA) {
+  # Incidence is mass action, R0=S0*beta/gamma, so
+  # beta=R0*gamma/S0
+  params$beta = 1.5*params$gamma/params$pop
+} else {
+  # Incidence is standard, R0=beta/gamma, so
+  # beta=R0*gamma
+  params$beta = 1.5*params$gamma
+}
 
 ## Fit using a genetic algorithm
 GA = ga(
   type = "real-valued",
-  fitness = function(x) -error_incidence(p_vary = c(beta = x[1], gamma = x[2]),
-                                         params = params,
-                                         incidence_data = data_subset,
-                                         which_incidence = which_incidence,
-                                         method = "rk4"),
-  parallel = 120,
-  lower = c(0.1, 1/20),
-  upper = c(1, 1/2),
+  fitness = function(x) 
+    -error_incidence(p_vary = c(beta = x[1], gamma = x[2]),
+                     params = params,
+                     incidence_data = peak2,
+                     method = "rk4"),
+  parallel = TRUE,
+  lower = c(ifelse(params$MA, 1e-5, 0.1), 1/14),
+  upper = c(ifelse(params$MA, 1e-2, 1), 1/2),
   pcrossover = 0.7,
   pmutation = 0.2,
   optim = TRUE,
   optimArgs = list(method = "CG"),
   suggestions = c(params$beta, params$gamma),
-  popSize = 500,
+  popSize = 200,
   maxiter = 100
 )
 
-params$beta = GA@solution[1]
-params$gamma = GA@solution[2]
-S0 = pop_data_FRA
-I0 = data_subset[[which_incidence]][1]/(params$beta)
-IC = c(S = S0, I = I0, R = 0)
-dates_num = as.numeric(as.Date(data_subset$date))
-times = seq(dates_num[1], dates_num[length(dates_num)], 0.1)
-sol <- ode(IC, times, RHS_KMK_SIR, params)
-sol_incidence = as.numeric(params$beta) * sol[,"S"] * sol[,"I"]/params$pop
-y_max = max(max(sol_incidence), max(data_subset[[which_incidence]]))
 
-plot(sol[,"time"], sol_incidence, type = "l",
-     xlab = "Date", ylab = "Incidence",
-     xaxt = "n", lwd = 2, col = "red",
-     ylim = c(0, y_max))
-lines(as.numeric(as.Date(data_subset$date)), data_subset[[which_incidence]],
-      type = "b")
-dates_pretty = pretty(dates_num)
-axis(1, at = dates_pretty, labels = as.Date(dates_pretty, origin="1970-01-01"))
+plot_solution(params, GA, peak2)
