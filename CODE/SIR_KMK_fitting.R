@@ -31,7 +31,7 @@ RHS_KMK_SIR_standard <- function(t, x, p) {
 error_incidence <- function(p_vary, 
                             params, 
                             incidence_data,
-                            method = "rk4") {
+                            method = "lsoda") {
   # Anything that changes during optimisation needs to be set here
   params$beta = as.numeric(p_vary["beta"])
   params$gamma = as.numeric(p_vary["gamma"])
@@ -44,9 +44,9 @@ error_incidence <- function(p_vary,
   } else {
     R0 = params$beta / params$gamma
   }
-  # if (R0<1) {
-  #   return(Inf)
-  # }
+  if (R0<1) {
+    return(Inf)
+  }
   # I0 is the I that gives us the incidence we are matching in the data.
   # This depends on the type of incidence function used
   if (params$MA) {
@@ -190,9 +190,9 @@ GA = ga(
                      incidence_data = peak2,
                      method = "rk4"),
   parallel = TRUE,
-  lower = c(ifelse(params$MA, 1e-5, 0.1), 1/14),
-  upper = c(ifelse(params$MA, 1e-2, 10), 1/2),
-  optim = TRUE,
+  lower = c(ifelse(params$MA, 1e-8, 0.1), 1/30),
+  upper = c(ifelse(params$MA, 1e-3, 10), 1),
+  # optim = TRUE,
   suggestions = c(params$beta, params$gamma),
   popSize = 200,
   maxiter = 100

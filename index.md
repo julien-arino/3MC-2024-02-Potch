@@ -1,6 +1,6 @@
 ## African Mathematical School on Quantitative Biology: Applications in Epidemiology, Ecology and Cancer
  
-Here are some slides and material for the 3MC African Mathematical School on Quantitative Biology: Applications in Epidemiology, Ecology and Cancer, held at Northwest University (Potchefstroom) in February 2024.
+Here are some slides and material for the [3MC African Mathematical School on Quantitative Biology: Applications in Epidemiology, Ecology and Cancer](https://natural-sciences.nwu.ac.za/paa/3MC-School-2024), held at Northwest University (Potchefstroom) in February 2024.
 
 On the [GitHub version](https://github.com/julien-arino/3MC-2024-02-Potch/) of the page, you have access to all the files. You can also download the entire repository by clicking the buttons on the left. (You can also of course clone this repo, but you will need to do that from the GitHub version of the site.)
 
