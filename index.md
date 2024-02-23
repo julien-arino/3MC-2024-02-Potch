@@ -10,6 +10,7 @@ Feel free to use the material in these slides or in the folders. If you find thi
 
 - [Spatial SEIR models](inger/SS.pdf)
 - [Ordinary Kriging in QGIS and R](inger/RThiede_OrdinaryKriging.pdf)
+
 Html produced from Rmarkdown files. You can find the Rmarkdown files in the `inger` directory.
 <ul>
 {% for file in site.static_files %}
