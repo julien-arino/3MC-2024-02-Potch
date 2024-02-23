@@ -1,0 +1,39 @@
+---
+title: "5. Autocorrelation Functions"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+---
+
+```{r, include = FALSE}
+library(spatstat)
+library(sp)
+library(gstat)
+library(jpeg)
+library(imager)
+library(sf)
+library(spdep)
+library(tmap)
+```
+# Geostatistics 
+
+Geostatistics - characterisation of spatial variability, creation of maps from point observations through spatial interpolation, and quantification of the accuracy of interpolated maps
+
+
+
+# Autocorrelation function for a time series 
+
+For a time series $Z(t_1),...,Z(t_n)$ with $E[Z(t_i)] = 0$ and $var(Z(t_i)) = \sigma^2, i = 1,...,n$ the covariance function  is a function of the distance in time $t_j - t_i$ \[cov(Z(t_i),Z(t_j)) = E[Z(t_i)Z(t_j)] = C(t_j-t_i).\] 
+
+The autocorrelation function is \[R(t_j-t_i) = \frac{cov(Z(t_i),Z(t_j))}{\sqrt{var(Z(t_i))var(Z(t_j))}} = \frac{C(t_j- t_i)}{C(0)}.\]
+
+But time has direction, space does not... 
+
+# Autocorrelation function in space
+
+*Covariance function*: $C(s,h) = cov(Z(s),Z(s+h)) = E[(Z(s) - \mu(s))(Z(s+h) - \mu(s+h))]$
+
+*Autocorrelation function (correlogram)*: \[R(s,h) = \frac{C(s,h)}{\sqrt{var(Z(s)) var(Z(s+h))}}\]
+
+Edge effects are more important than in time series since potentially many points located at the domain boundary. 
+

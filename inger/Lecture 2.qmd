@@ -1,0 +1,197 @@
+---
+title: "Mini-course 3"
+subtitle: "Uncertainty and sensitivity analysis"
+titlegraphic: witslogo.png 
+author: "Dr Raeesa Manjoo-Docrat"
+date: "23 Febraury 2024"
+format: beamer
+incremental: true
+fontfamily: libertinus
+colorlinks: true
+fontsize: 12pt
+lang: en-ZA
+theme: "Berlin"
+colortheme: "spruce"
+fonttheme: "structurebold"
+header-includes: \usepackage{xcolor, tikz}
+---
+
+# What will we cover today
+
+- Introduction
+- Purpose of sensitivity analysis
+- Types of sensitivity analysis
+- Steps in conducting a sensitivity analysis
+- Simple exercise
+- Practical examples
+- Discussion
+
+---
+
+![Welcome to sensitivity analysis!](sens3.jpg){width=80%}
+
+# Introduction
+::: {.callout-tip appearance="simple" icon="false"}
+
+Uncertainty and sensitivity analysis are techniques used to understand how changes in the input parameters of a model impact the output.
+:::
+
+ It helps in making more informed decisions by assessing the robustness and reliability of models.
+ 
+ ---
+ 
+ ![Nawaz, A., Arora, A. S., Yun, C. M., Lee, J. J., & Lee, M. (2021).](sens2.jpg){width=100%}
+
+# Purpose of Uncertainty/sensitivity analysis
+
+1. Identifying Key Variables:
+  - Determine which input variables have the most significant impact on the model's outcomes.
+  
+2. Assessing the Impact of Input Variability:
+  - Evaluate how uncertainties in input parameters affect the reliability of predictions.
+  
+3. Enhancing Decision-Making Confidence:
+  - Provide decision-makers with a clearer understanding of the model's behavior under different conditions.
+
+# Types of Sensitivity Analysis
+
+- One-Way Sensitivity Analysis:
+Vary one input parameter at a time while keeping others constant to observe its impact.
+
+- Multi-Way Sensitivity Analysis:
+Examine interactions among multiple variables simultaneously to capture complex relationships.
+
+
+# Steps in Conducting Sensitivity Analysis
+
+1. Define the Model and Objective:
+Clearly articulate the purpose of the model and the specific objectives of the sensitivity analysis.
+
+2. Identify Input Variables:
+List all relevant input parameters that influence the model's outcomes.
+
+3. Determine Input Ranges:
+Specify the range of values for each input parameter over which the sensitivity analysis will be conducted.
+
+4. Perform Sensitivity Analysis:
+Utilise appropriate mathematical or simulation techniques to analyze sensitivity.
+
+# Practical examples
+
+![Dresselhaus, Claudia, et al. "A spatial model with vaccinations for COVID-19 in South Africa." Spatial Statistics (2023): 100792.](sens.jpg){width=100%}
+---
+![Dresselhaus, Claudia, et al. "A spatial model with vaccinations for COVID-19 in South Africa." Spatial Statistics (2023): 100792.](snes.jpg){width=100%}
+
+# Simple exercise (as promised by Inger)
+
+For this exercise, we will first build a very simple SIR model. This model has 3 compartments: S, I and R for the number of susceptible, infected and removed individuals. You have seen this many times!
+
+![Dont' judge my drawing :/](pic5.png){width=60%}
+
+
+# The model
+
+```{r, echo =TRUE}
+
+library(deSolve)
+SIR <- function(t, x, parms)  {
+  with(as.list(c(parms, x)), {
+     N = S + I + R
+    dS = -beta*(S/N)*(I)
+    dI = beta*(S/N)*(I) -gamma*I
+    dR = gamma*I 
+      output <- c(dS, dI,dR) 
+    list(output)
+  })
+}
+
+```
+
+# continued
+
+```{R, echo=FALSE}
+
+#the Initial values
+start<-c(S=10000,I=2,R=0)
+  
+parms <- c(beta=0.4,gamma=1/4) 
+
+## vector of timesteps
+times <- seq(0, 100, 1)
+
+run_d<-ode(times=times, y=start, func=SIR,parms=parms)
+
+pop<-run_d[,2]+run_d[,3]+run_d[,4]
+
+plot(times,run_d[,2], col="green", ylim=c(0,11000), type="l", main="SIR
+     Model",ylab="Number of people",xlab="Times in Days")
+lines(times,run_d[,3], col="red")
+lines(times, run_d[,4], col="blue")
+legend("topright",legend=c("S","I","R"),col=c("green", "red","blue"), 
+       lty=c(1,1,1))
+```
+
+# One parameter sensitivity analysis
+There are only two parameters in this model, $\beta$ and $\gamma$. We will start with a single parameter sensitivity of each of the parameters on the proportion of recovered individuals. You can check the sensitivity of any output variable wrt the parameters.
+
+`betasens<-NULL` 
+`for (i in 1:1000){`
+  `parms <- c(beta=runif(1,0,1),gamma=1/4)`
+  `run_d<-ode(times=times, y=start, func=SIR,parms=parms)`
+  `betasens<-rbind(betasens,c(parms[1],run_d[length(run_d[,1]),4]/pop))`
+}`
+
+
+
+# Plot
+
+```{r, echo=FALSE}
+betasens<-NULL #creating a vector to store our random betas
+for (i in 1:1000){
+  parms <- c(beta=runif(1,0,1),gamma=1/4)
+  run_d<-ode(times=times, y=start, func=SIR,parms=parms)
+  betasens<-rbind(betasens,c(parms[1],run_d[length(run_d[,1]),4]/pop))
+}
+par(mfrow=c(1,2))
+hist(betasens[,2],xlab="Proportion of Recovered",ylab="Frequency",
+     main="Histogram of sensitivity of Beta",col=2)
+
+plot(betasens[,1],betasens[,2],xlab="beta",ylab="Proportion of Recovered",col=2)
+
+```
+
+
+# Multivariate Sensitivity Analysis
+
+
+```{r, echo=TRUE}
+
+CIdata<-NULL
+for ( i in 1:20){
+  Inc=runif(1,2,6)
+  parms <- c(beta=runif(1,0,1), gamma=1/Inc)
+  run_d<-ode(times=times, y=start, func=SIR,parms=parms)
+  CIdata<-cbind(CIdata,run_d[,4])
+}
+CIsd<-CIuci<-CIlci<-NULL
+CIMean<-rowMeans(CIdata)
+for (i in 1:(dim(CIdata)[1])){
+  CIsd[i]<-sd(CIdata[i,])
+  CIuci[i]<-CIMean[i]+1.96*CIsd[i]/sqrt(20)
+  CIlci[i]<-CIMean[i]-1.96*CIsd[i]/sqrt(20)
+}
+
+```
+
+# Finally
+
+```{r, echo =TRUE, fig.height=2.5, fig.width=3.5}
+plot(times, CIMean, type="l", ylim=c(0,10000))
+lines(times, CIlci, col="red")
+lines(times, CIuci, col="red")
+polygon(c(times,rev(times)), c(CIuci, rev(CIlci)), col="red")
+```
+
+# Concluding remarks
+
+![Thank you for listening](sens5.jpeg){width=60%}

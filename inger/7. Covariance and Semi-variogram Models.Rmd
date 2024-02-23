@@ -1,0 +1,163 @@
+---
+title: "7. Covariance and Semi-variogram Models"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+---
+
+```{r, include = FALSE}
+library(spatstat)
+library(sp)
+library(gstat)
+library(jpeg)
+library(imager)
+library(sf)
+library(spdep)
+library(tmap)
+```
+
+# Covariance and Semivariogram Models
+
+For an isotropic process with variance $\sigma^2$ and no nugget effect:
+
+\[ \gamma(h) = 
+\left\{ 
+\begin{eqnarray*}
+ 0 &\textrm{ if }& h=0 \\
+ \sigma^2(1-C(h)) &\textrm{ if }& h >0 
+\end{eqnarray*}
+\right.
+\]
+
+
+# Matern Class of Covariance Functions (Matern (1986))
+
+\[C(h) = \sigma^2 \frac{1}{\Gamma(\nu)} \left(\frac{\theta h}{ 2} \right) 2 K_{\nu}(\theta h), \nu > 0, \theta > 0\] where $K_{\nu}$ is the modified Bessel function of the second kind of order $\nu$ \[K_{\nu}(t) \approx \frac{\Gamma(\nu)}{2} \left(\frac{t}{2} \right)^{-\nu} \textrm{ as } t \to 0.\]
+
+- As $\nu$ increases the smoothness increases. 
+
+- $\theta$ governs the range of spatial dependence. 
+
+# Matern Class of Covariance Functions (Matern (1986))
+```{r, out.width="60%"}
+sigma <-  2
+nu <- 25 #test what happens as nu is increased
+theta <- 10 # test what happens as you change theta
+curve((sigma^2)*(1/gamma(nu))*(theta*x/2)*2*besselY(theta*x,nu), from = 0, to = 250)
+```
+
+# Matern Class of Covariance Functions (Matern (1986))
+
+*As* $\nu \to \infty$*: Gaussian model* \[C(h) = \sigma^2 e^{-\theta h^2} = \sigma^2 e^{-3 \frac{h^2}{\alpha^2}}\] where $\alpha$ is the practical range (the distance at which the correlations have decreased to $\approx 0.05$ or less ($e^{-3} = 0.04978$))
+
+# Matern Class of Covariance Functions (Matern (1986))
+```{r, out.width="60%"}
+sigma <-  10
+alpha <- 100
+curve((sigma^2)*exp(-3*(x^2)/(alpha^2)), from = 0, to = 250)
+```
+
+# Matern Class of Covariance Functions (Matern (1986))
+*For* $\nu = 0.5$ *: exponential model* \[C(h) = \sigma^2 e^{-\theta h} = \sigma^2 e^{-3 \frac{h}{\alpha}}\]
+
+```{r, out.width="60%"}
+sigma <-  10
+alpha <- 100
+curve((sigma^2)*exp(-3*(x)/(alpha)), from = 0, to = 250)
+```
+
+
+# Matern Class of Covariance Functions (Matern (1986))
+
+Whittle believes these two models are only valid for $\mathbb{R}$, and thus suggests the following model for $\mathbb{R}^2$ (which is however more complicated to model):
+
+*For* $\nu =1$*: Whittle (1954)* \[C(h) = \sigma^2 \theta h K_1(\theta h)\]
+
+# Matern Class of Covariance Functions (Matern (1986))
+
+```{r, out.width="60%"}
+sigma <-  2
+theta <- 2 # test what happens as you change theta
+curve((sigma^2)*(theta)*(x)*besselY(theta*x,1), from = 0, to = 250)
+```
+
+# Basic Models when not Second-Order Stationary (but still isotropic)
+
+*Power model:* $\gamma(h) = \theta h^{\lambda}, \theta \ge 0, 0 \le \lambda < 2$. When $\lambda = 1$, a linear semivariogram is produced.
+
+```{r, out.width="60%"}
+theta <- 10
+lambda <- 1.5
+curve(theta*x^(lambda), from = 0, to = 200)
+```
+
+# Estimating the Semivariogram (the empirical semivariogram)
+
+Matheron (1962): An unbiased estimator of $\gamma(h)$ \[\hat{\gamma}(h) = \frac{1}{2|N(h)|} \sum_{N(h)} (Z(s_i) - Z(s_j))^2\]
+
+- At least 30 pairs of locations should be available at each $h$, thus group into $h \pm \epsilon$. 
+
+# Estimating the Semivariogram (the empirical semivariogram)
+```{r, out.width="60%"}
+data(meuse)
+meuse$x
+meuse$y
+plot(x = meuse$x, y = meuse$y)
+```
+
+# Estimating the Semivariogram (the empirical semivariogram)
+```{r, out.width="60%"}
+# no trend:
+coordinates(meuse) = ~x+y
+vv1 <- gstat::variogram(log(zinc)~1, meuse)
+plot(vv1)
+vv11 <- gstat::variogram(zinc~1, meuse)
+plot(vv11)
+```
+
+# Estimating the Semivariogram (the empirical semivariogram)
+```{r, out.width="60%"}
+# residual variogram w.r.t. a linear trend:
+vv2 <- variogram(log(zinc)~x+y, meuse)
+plot(vv2)
+```
+
+# Estimating the Semivariogram (the empirical semivariogram)
+
+```{r, out.width="60%"}
+# directional variogram:
+vv3 <- variogram(log(zinc)~x+y, meuse, alpha=c(0,45,90,135))
+plot(vv3)
+```
+
+# Estimating the Semivariogram (the empirical semivariogram)
+
+```{r, out.width="60%"}
+vv4 <- variogram(log(zinc)~1, meuse, width=50, cutoff=1100)
+plot(vv4)
+```
+
+# Estimating the Semivariogram (the empirical semivariogram)
+```{r, out.width="60%"}
+# GLS residual variogram:
+v.fit <- fit.variogram(vv2, vgm(1, "Sph", range = 700, nugget = 1)) #Try "Mat", "Exp"
+v.fit
+```
+
+# Estimating the Semivariogram (the empirical semivariogram)
+```{r, out.width="60%"}
+set = list(gls=1)
+vv2
+```
+
+# Estimating the Semivariogram (the empirical semivariogram)
+```{r, out.width="60%"}
+g <-  gstat(NULL, "log-zinc", log(zinc)~x+y, meuse, model=v.fit, set = set)
+vg <- variogram(g)
+plot(vg)
+```
+
+# Estimating the Semivariogram (the empirical semivariogram)
+```{r, out.width="60%"}
+plot(vg, model = v.fit)
+```

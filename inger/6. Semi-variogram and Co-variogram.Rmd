@@ -1,0 +1,69 @@
+---
+title: "6. Semi-variogram and Co-variogram"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+---
+
+```{r, include = FALSE}
+library(spatstat)
+library(sp)
+library(gstat)
+library(jpeg)
+library(imager)
+library(sf)
+library(spdep)
+library(tmap)
+```
+
+# Semivariogram
+
+The semivariogram captures the second-moment structure of the data. 
+
+\[\gamma(s,h) = \frac{1}{2} [var(Z(s) - Z(s+h))] \]
+\[= \frac{1}{2} [var(Z(s)) + var(Z(s+h)) - 2cov(Z(s),Z(s+h))].\]
+
+# Semivariogram
+
+If second-order stationarity holds: $\gamma(h) = \frac{1}{2} (2\sigma^2 -2 C(h)) = C(0) - C(h)$.
+
+If positive spatial correlation is present: 
+
+- $\gamma(0) = C(0) - C(0) = 0$. However due to measurement error and microscale variation there may be a *nugget effect* - this is often observed in sample variograms. 
+- The variogram attains $\gamma(h^*) = \sigma^2$ when the lag exceeds the distance $h^*$ for which the data points are correlated. 
+- The range is $h^*$ (where $C(h^*) = 0$ or at $95\% \sigma^2$)
+
+# Semivariogram
+
+Empirical semivariogram:
+
+\[\hat{\gamma}(h) = \frac{1}{2 |N(h)|} \sum_{N(h)} \left(Z(s_i) - Z(s_j) \right)^2 \]
+
+Empirical covariance estimation: 
+
+\[\hat{C}(h) = \frac{1}{|N(h)|} \sum_{N(h)} (Z(s_i)-\bar{Z})(Z(s_j)-\bar{Z})\]
+
+# Semivariogram
+
+```{r, out.width='55%', fig.align='center', echo = TRUE}
+knitr::include_graphics('variogram.jpg')
+``` 
+
+# Semivariogram and Covariance Functions
+
+*Semivariogram:* $\gamma(h)$ vs. $h$ 
+
+*Variogram:* $2\gamma(h)$ (but naming is not consistant)
+
+*Covariance function:* $C(h)$ vs. $h$
+
+
+# Semivariogram and Covariance Functions
+
+Under stationarity $\gamma(h) = \gamma(s_i-s_j) = C(0) - C(s_i-s_j)$. Recall that $C(0) = var(Z(s))$. 
+
+ESTIMATION (Matheron 1962, 1963): \[\gamma(s_i-s_j) = \frac{1}{2|N(s_i-s_j)|} \sum_{N(s_i-s_j)} ({Z(s_i) - Z(s_j)})^2\]
+
+\[C(s_i-s_j) = \frac{1}{2|N(s_i-s_j)|} \sum_{N(s_i-s_j)} (Z(s_i) - \bar{Z})(Z(s_j)-\bar{Z})\]
+\[\textrm{ where } \bar{Z} = \frac{1}{n} \sum_{i=1}^n Z(s_i). \]
+

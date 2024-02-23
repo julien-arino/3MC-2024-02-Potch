@@ -1,0 +1,186 @@
+---
+title: "9. Testing for Complete Spatial Randomness"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+---
+
+
+```{r, include = FALSE}
+library(spatstat)
+library(sp)
+library(gstat)
+library(jpeg)
+library(imager)
+library(sf)
+library(spdep)
+library(tmap)
+```
+
+# Testing for CSR
+
+Distance-based measure using events locations: however there are $n(n-1)/2$ inter-event distances to check for the $n$ *nearest neighbour distances* so is computationally intensive. To deal with computationally this a tesselation or triangulation is used usually. 
+
+*Delauney/Voronoi tesslation*: the Dirichlet tile associated with point $Z(s_i)$ is the region of space that is closer to $Z(s_i)$ than to any other point in $Z(s)$. 
+
+*Delauney triangulation*: 1) Construct the Dirchlet/Voronoi tesselation, 2) Two points are Delauney neighbours if their Dirchlet/Voronoi tiles share a common boundary. This results in a tesselation of disjoint triangles (the union of the triangles is the convex hull).
+
+# Testing for CSR
+```{r}
+plot(murchison$gold)
+
+nm <- nndist.ppp(murchison$gold)
+#nm
+summary(nm)
+```
+
+# Testing for CSR
+```{r}
+plot(austates)
+a <- austates
+```
+
+# Testing for CSR
+```{r}
+ld <- as.tess(austates)
+ld
+plot(ld)
+```
+
+# Testing for CSR
+```{r}
+plot(ld)
+```
+
+# Testing for CSR
+```{r}
+summary(austates)
+```
+
+# Testing for CSR
+```{r, out.width="50%"}
+x <- load.image("scale1to10.jpg") 
+#Reads in the image as a matrix (uses jpeg package)
+t <- threshold(x, 0.5) 
+#returns a binary image (matrix) (uses EBImage package) 
+plot(t)
+```
+
+# Testing for CSR
+```{r}
+m <- matrix(t, ncol = ncol(x), nrow = nrow(x))  #blank matrix
+ss <- ncol(x)
+m <- m[,ncol(m):1]
+z <- NULL
+for (i in 1:ncol(t)) {
+   for (j in 1:nrow(t)) {
+ 		if (m[i,j] == 1){
+ 			z <- rbind(z,c(i,j))
+		} } }
+ww <- owin(c(0,ncol(t)), c(0,nrow(t)))
+d <- as.ppp(z,ww)
+dsub <-d[owin(c(0,100), c(0,100))]
+```
+# Testing for CSR
+```{r}
+plot(dsub, pch = 20, cex = 0.1 )
+```
+
+# Testing for CSR
+```{r}
+dt <- tess(dsub, image = m[1:100,1:100], 
+           window = owin(c(0,100), c(0,100) ))
+plot(dt)
+```
+
+# Testing for CSR
+```{r}
+tiles(dt)
+dtd <- dirichlet(dsub)
+dtd
+```
+
+
+# Testing for CSR
+```{r}
+plot(dtd)
+```
+
+
+# $F$-function: the empty-space function
+
+$F(r) = P[\rho(a,x) \le r]$: the probability of observing at least one point closer than $r$ to the arbitrary point $a$ (not necessarily a point of the pattern).  If the estimate is smaller than CSR ($F(r) = 1- e^{-\pi \lambda r^2}$) then the points are clustered, if larger than CSR then the points are regular. 
+
+$1-F (r)$ is the probability that a randomly placed disk with radius $r$ does not contain a point.
+
+# $F$-function: the empty-space function
+```{r}
+ff <- Fest(dsub, correction = "none")
+f <- Fest(dsub)
+plot(f)
+plot(ff)
+```
+
+# $F$-function: the empty-space function
+```{r}
+ffci <- varblock(dsub, fun = Fest, correction = "none")
+plot(ffci)
+#ffciloh <- lohboot(dsub, fun = Fest, correction = "none")
+```
+
+# $F$-function: the empty-space function
+```{r}
+ff <- Fest(dsub)
+plot(ff)
+```
+
+# $F$-function: the empty-space function
+```{r}
+plot(density.ppp(dsub))
+ffinhom <- Finhom(dsub)
+plot(ffinhom)
+```
+
+# $F$-function: the empty-space function
+```{r}
+ffinhomci <- varblock(dsub, fun = Finhom, correction = "none")
+plot(ffinhomci)
+```
+
+
+# $G$-function: nearest-neighbour distance function 
+
+An empirical estimate of the probability that the nearest-neighbour distance is at most $r_0$: \[\hat{G}(r_0) = \frac{\#(r_i-r_0)}{n}.\]
+If the estimate is larger than CSR ($G(r) = 1- e^{-\pi \lambda r^2}$) then the points are clustered, if smaller than CSR then the points are regular. 
+
+$1-G(r)$ is the probability that a disk with radius $r$ centered at a randomly
+selected point does not contain a further point.
+
+
+# $G$-function: nearest-neighbour distance function 
+
+```{r}
+gg <- Gest(dsub, correction = "none")
+plot(gg)
+```
+
+# $G$-function: nearest-neighbour distance function 
+
+```{r}
+ggci <- varblock(dsub, fun = Gest, correction = "none")
+plot(ggci)
+```
+
+# $G$-function: nearest-neighbour distance function 
+
+```{r}
+gginhom <- Ginhom(dsub)
+plot(gginhom)
+```
+
+# $G$-function: nearest-neighbour distance function 
+
+```{r}
+gginhomci <- varblock(dsub, fun = Ginhom, correction = "none")
+plot(gginhomci)
+```

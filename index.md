@@ -6,6 +6,20 @@ On the [GitHub version](https://github.com/julien-arino/3MC-2024-02-Potch/) of t
 
 Feel free to use the material in these slides or in the folders. If you find this useful, we will be happy to know.
 
+### Slides Inger
+
+Html produced from Rmarkdown files. You can find the Rmarkdown files in the `inger` directory.
+<ul>
+{% for file in site.static_files %}
+  {% if file.path contains 'inger' %}
+    {% if file.path contains 'html' %}
+      <li><a href="https://julien-arino.github.io/3MC-2024-02-Potch/inger/{{ file.basename }}.html">{{ file.basename }}</a></li>
+    {% endif %}
+  {% endif %}
+{% endfor %}
+</ul>
+
+
 ### Slides Jacek
 
 ### Slides James
@@ -18,12 +32,14 @@ Please note that at present, the slides are work in progress. I will be updating
 
 <ul>
 {% for file in site.static_files %}
-  {% if file.path contains 'SLIDES' %}
-    {% if file.path contains 'course' %}
-      {% if file.path contains 'pdf' %}
-        {% unless file.path contains 'FIGS' %}
-          <li><a href="https://julien-arino.github.io/3MC-2024-02-Potch/SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
-        {% endunless %}
+  {% if file.path contains 'julien' %}
+    {% if file.path contains 'SLIDES' %}
+      {% if file.path contains 'course' %}
+        {% if file.path contains 'pdf' %}
+          {% unless file.path contains 'FIGS' %}
+            <li><a href="https://julien-arino.github.io/3MC-2024-02-Potch/julien/SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
+          {% endunless %}
+        {% endif %}
       {% endif %}
     {% endif %}
   {% endif %}

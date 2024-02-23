@@ -1,0 +1,30 @@
+---
+title: "What is Spatial Data Science?"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+---
+
+# Data Science
+
+Data science combines math and statistics, specialized programming, advanced analytics, artificial intelligence (AI), and machine learning with specific subject matter expertise to uncover actionable insights hidden in an organization's data. These insights can be used to guide decision making and strategic planning. (IBM)
+
+Data science is the study of information and its source, collection, organization, processing, and presentation. It is an interdisciplinary area that incorporates elements of statistics, computer science, operations research, mathematics, and programming.
+
+# Spatial Data Science 
+
+Spatial data science (SDS) is a subset of Data Science that focuses on the unique characteristics of spatial data, moving beyond simply looking at *where* things happen to understand why they happen *there*.
+
+Extract deeper insight from data using a comprehensive set of analytical methods and spatial algorithms, including machine learning and deep learning techniques
+
+# Spatial Data Science 
+
+Where data science intersects with GIS with a key focus on geospatial data and new computing techniques. 
+
+Location matters - statistical computing used to access, manipulate, explore, and visualize data.
+
+# Tools 
+
+Data scientists use tools like R and Python to cleanse, aggregate, and manipulate data to create predictive models and analytics. 
+
+A data scientist’s primary task is to translate raw data using advanced techniques into actionable insights.

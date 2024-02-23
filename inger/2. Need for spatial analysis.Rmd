@@ -1,0 +1,47 @@
+---
+title: "The need for spatial analysis"
+output: beamer_presentation
+---
+
+# Why spatial?
+
+```{r, include = FALSE}
+library(spatstat)
+library(sp)
+library(gstat)
+library(jpeg)
+library(imager)
+library(sp)
+```
+
+Spatial statistics asks 'How much is where' instead of the traditional 'How much?' 
+
+- Data points are tied to a location
+- Support in space is usually limited, and usually points
+- The observations are subject to random influence
+
+e.g. Rainfall and temperature, soil contamination, socio economic data, geological data, hydrological data, disease spread
+
+The key element to the analysis is the autocorrelation (dependency) of the observations in space. Spatially independent implies lack of spatial dependence. 
+
+*Autocorrelation:* correlation between elements of data separated by a given interval of space/time (auto = correlation of a variable with itself)
+
+*Correlation:* interdependence of variable quantities  (traditional statistics, longitudinal data, repeated measures)
+
+# Tobler's First Law of Geography: 
+
+Everything is related to everything else, but near things are more related than distant things (Waldo Tobler)
+
+Observations in close spatial proximity tend to be more similar than expected for observations more spatially separated. 
+
+# Spatial analysis: 
+
+In spatial analysis we want to answer questions like:
+
+1) what are the parameters for a model generating the data?
+
+2) is the mean different in different spatial regions?
+
+3) can we estimate a variable at an unobserved location?
+
+We model a spatial variable $Z(s)$ observed at $n$ locations, $Z(s) = \{Z(s_1),Z(s_2),...,Z(s_n)\}$, at spatial location $s_i=(x_i,y_i)$.

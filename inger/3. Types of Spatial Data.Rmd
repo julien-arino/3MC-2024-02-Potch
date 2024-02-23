@@ -1,0 +1,214 @@
+---
+title: "Types of spatial data"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+---
+
+```{r, include = FALSE}
+library(spatstat)
+library(knitr)
+library(sp)
+library(gstat)
+library(jpeg)
+library(imager)
+library(sf)
+```
+
+# Notation 
+
+(Classification discussed here according to Cressie (1993))
+
+Consider a spatial process in $d$ dimensions: $\{Z(s): s \in D \subset \mathbb{R}^d\}$. $Z$ is the *attribute* we observe at spatial location $s$ (a vector if $d$ co-ordinates). Most often $d=2$ - Cartesian co-ordinates.
+
+# 1. Geospatial Data
+
+- $D$: continuous, fixed set 
+- *continuous*: $Z$ can be observed everywhere
+- *fixed*: points in $D$ are not stochastic 
+- $Z$ can be discrete of continuous 
+
+Data measured only at certain locations - cannot be sampled exhaustively. Can we construct a surface of $Z$ over the entire domain? 
+
+```{r, out.width='55%', fig.align='center', echo = FALSE}
+#This is how to display a graphic using Latex in R Markdown: 
+knitr::include_graphics('Fig1.3.JPG')
+
+```
+
+# 1. Geospatial Data
+```{r, out.width='55%', fig.align='center', echo = FALSE}
+#This is how to display a graphic using Latex in R Markdown: 
+knitr::include_graphics('Fig1.4.JPG')
+```
+
+The R package *spatstat* has built in data sets, see
+https://cran.r-project.org/web/packages/spatstat/vignettes/datasets.pdf
+
+# 1. Geospatial Data
+```{r, out.width='55%'}
+a <- as.ppp(longleaf)
+a1 <- as.data.frame(longleaf)
+plot(a)
+```
+
+# 1. Geospatial Data
+```{r, out.width='55%'}
+aa <- as.ppp(chorley)
+plot(aa)
+```
+
+# 1. Geospatial Data
+```{r}
+aa$window$bdry
+plot(aa$window)
+```
+
+
+# 2. Lattice Data (or Regional Data)
+
+- $D$: fixed and discrete
+- *fixed*: points $D$ are not stochastic
+- *discrete*: countable
+
+For example (1) data collected at the ward level, (2) remotely sensed data reported at the pixel level. This is *spatially aggregated data* thus also called Regional Data. The data is usually exhaustively observed. 
+
+```{r, out.width='55%', fig.align='center', echo = FALSE}
+#This is how to display a graphic using Latex in R Markdown: 
+knitr::include_graphics('Fig1.5.JPG')
+```
+
+# 2. Lattice Data (or Regional Data)
+
+The term used is *sites* instead of *points* to refer to the spatial location of lattice data. Usually a polygon (ward boundary) with some representative location as the centroid (for example). 
+
+Notation: $Z(A_i)$
+
+1) $A_i$'s in close proximity may have similar values (positive spatial autocorrelation)
+2) Identify region clustering of 'high' values
+3) Where are the spatial risks? (Correlate with another covariate.)
+
+# Measures on Lattices
+
+Need a measure of spatial connectivity.How is distace between 'representative points' determined? For each pair $s_i$ and $s_j$ associate a weight $w_{ij}$ for sites considered spatially connected 
+\[w_{ij} = \left\{\begin{eqnarray}
+1 & \textrm{ if connected} \\
+0 & \textrm{ otherwise.}
+\end{eqnarray}\right.\]
+
+For pixels: 4-connectivity, diagonal neighbours, 8-connectivity
+
+# Measures on Lattices
+
+For polygons: if points share a common border or if representative points are less than a certain critical distance apart
+
+```{r, out.width='40%', fig.align='center', echo = TRUE}
+knitr::include_graphics('scale1to10.jpg')
+```
+
+# Measures on Lattices
+```{r}
+heather
+data(heather)
+```
+
+# Measures on Lattices
+```{r, out.width='55%'}
+plot(heather)
+```
+
+# Measures on Lattices
+```{r, out.width='55%'}
+plot(heather$fine)
+```
+
+
+# Measures on Lattices
+```{r}
+summary(heather$fine)
+```
+
+# Measures on Lattices
+
+```{r, out.width='55%'}
+Can <- st_read("scottish_lip_cancer.shp")
+plot(Can)
+```
+
+# Measures on Lattices
+```{r}
+summary(Can)
+```
+# Measures on Lattices
+```{r}
+Can$COUNT
+```
+# Measures on Lattices
+```{r}
+Can$SMR
+```
+# Measures on Lattices
+```{r}
+Can$PY
+``` 
+# Measures on Lattices
+```{r, out.width='55%'}
+count <- data.frame(Can$X_COOR, Can$Y_COOR, Can$COUNT)
+w <- owin(xrange = c(min(Can$X_COOR), max(Can$X_COOR)), yrange = c(min(Can$Y_COOR), max(Can$Y_COOR)))
+plot(w)
+countpp <- as.ppp(count,w)
+plot(countpp)
+```
+
+
+# Measures on Lattices
+```{r, out.width='55%'}
+plot(Can)
+```
+
+# 3. Point Patterns (Unmarked patterns)
+
+A point pattern is a collection of points $I(s), s \in D^*$. The *random* domain $D^*$ is obtained as the locations in fixed $D$ for which $I(s) =1$ (locations where $I(s)=0)$ removed from $D$). Each realisation of the point process produces a $D^*$. The indicator function could be something like the following, but the focus is on $D^*$ more than on $I(\cdot)$: 
+\[I(s) = \left\{\begin{eqnarray}
+1 & \textrm{ if } Z(s) \ge c \\
+0 & \textrm{ otherwise.}
+\end{eqnarray}
+\right.\] 
+
+Point patterns are effectively unmarked spatial data. 
+
+# 3. Point Patterns (Unmarked patterns)
+
+We ask: *Are the points random or is there a spatial pattern?*
+
+```{r}
+data(murchison)
+murchison
+plot(murchison$gold)
+plot(murchison$faults)
+plot(murchison$greenstone)
+```
+# 3. Point Patterns (Unmarked patterns)
+
+```{r, out.width='55%'}
+mpp <- as.ppp(murchison$gold)
+mpp
+plot(mpp)
+```
+
+# 3. Point Patterns (Unmarked patterns)
+
+```{r, out.width='55%'}
+lpp <- as.psp(murchison$faults)
+lpp
+plot(lpp)
+```
+
+# 3. Point Patterns (Unmarked patterns)
+
+```{r, out.width='55%'}
+ppp <- as.polygonal(murchison$greenstone)
+ppp
+plot(ppp)
+```
+

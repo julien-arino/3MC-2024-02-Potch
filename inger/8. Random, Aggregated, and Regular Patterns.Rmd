@@ -1,0 +1,110 @@
+---
+title: "8. Random, Aggregated, and Regular Patterns"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+---
+
+
+```{r, include = FALSE}
+library(spatstat)
+library(sp)
+library(gstat)
+library(jpeg)
+library(imager)
+library(sf)
+library(spdep)
+library(tmap)
+```
+
+# First Order Intensity
+
+For the process $Y(u)$ we assume that $E[Y(u)] = \mu(u)$, that is, the expectation depends on the location. It is often assumed, however, that $\mu(u) = \mu$, a constant expectation over the area. This should be tested of course. 
+
+
+The intensity (first-order) $\mu(s)$ is the average number of events per unit area. 
+
+\[\mu(s) = \lim_{\nu(ds) \to 0} \frac{E[N(ds)]}{\nu(ds)}\] where $ds$ is an infinitesimal area (disc) in $\mathbb{R}^d$ centered at $s$. 
+
+# First Order Intensity
+```{r, out.width="65%"}
+data(murchison)
+data <- murchison$gold
+plot(data)
+```
+
+
+# First Order Intensity
+```{r, out.width="65%"}
+plot(density.ppp(data), main = "density")
+```
+
+
+
+# Three types of stationarity:
+
+1) STRICT STATIONARITY: \[\forall h~P[Y(u_1), Y(u_2),...,Y(u_n)]\] \[ = P[Y(u_1+h), Y(u_2+h),...,Y(u_n+h)].\]
+
+# Three types of stationarity:
+
+2) SECOND ORDER STATIONARITY: \[E[Y(u)] = \mu \textrm{ and } E(Y(u_i), Y(u_j)) = C(u_i-u_j).\]
+
+Recall: $cov(X,Y) = E[XY] - E[X]E[Y]$ so $cov(Y(u_i),Y(u_j)) = E[Y(u_i)Y(u_j)] - E[Y(u_i)]E[Y(u_j)] = E[Y(u_i)Y(u_j)] - \mu^2$
+
+# Three types of stationarity:
+
+3) INTRINSIC STATIONARITY: \[E[Y(u_i)-Y(u_j)] = 0 \textrm{ and } E[(Y(u_i)-Y(u_j))^2] = 2\gamma(u_1-u_2).\]
+
+Recall: $cov(X,Y) = E[XY] - E[X]E[Y]$ so $cov(Y(u_i),Y(u_j)) = E[Y(u_i)Y(u_j)] - E[Y(u_i)]E[Y(u_j)] = [Y(u_i)Y(u_j)] - \mu^2$
+
+# ERGODIC PROCESS: 
+
+Has the same behaviour averaged over space as averaged over the space of all the system's states, so that we can use the spatially shifted data to estimate the properties locally. 
+
+# ISOTROPIC PROCESS:
+
+A process is isotropic if the variation (the covariance function) is the same in every *direction*. Otherwise the process is called anisotropic, depending on both the length and direction of the distance vector $u_i - u_j$. 
+
+```{r, out.width= "50%"}
+angles <- nnorient(murchison$gold, correction = "none")
+r <- rose(angles)
+```
+
+# Random process: homogeneous Poisson process
+
+A *homogeneous Poisson process* is a model for a discrete events in space where the expected distance  between events is known, but the exact locations is random. Usually indicated with a parameter $\lambda$ which gives the expected number of events in a unit area. 
+
+```{r, out.width= "50%"}
+sim <- rpoispp(lambda = 200)
+plot(sim, pch = 0.1)
+```
+
+
+# Random process: homogeneous Poisson process
+
+If the process is binomial the average number of events is $n \pi(A)$ so that \[\mu(s) = \lim_{\nu(ds) \to 0} \frac{n \pi(ds)}{\nu(ds)} = \lim_{\nu(ds) \to 0} \frac{n \nu(ds)/\nu(D)}{\nu(ds)} = \frac{n}{\nu(D)} = \mu\]
+
+So by conditioning a Homogeneous Poisson Process on the number of events a binomial process is valid and can be used in hypothesis testing (HPP = binomial for fixed $n$). 
+
+# An inhibited point process
+
+If event locations are more inhibited than expected under a HPP, then a point pattern is called *inhibited* or *regular*. 
+
+```{r, out.width= "60%"}
+dat4 <- rSSI(r = 0.7, win = square(10), giveup = 100)
+plot(dat4, pch = 20, cex = 0.3)
+```
+
+
+
+# A clustered point process
+
+If event locations are closer than expected under a HPP, then a point pattern is called *clustered*. 
+
+```{r, out.width = "60%"}
+nclust <- function(x0, y0, radius, n){
+    return(runifdisc(n, radius, centre=c(x0, y0)))}
+dat2 <- rPoissonCluster(kappa = 10, expand = 10, rcluster = nclust, radius = 0.2,n =5, win = owin(c(0,10), c(0,10)), nsim = 1, drop = TRUE)
+plot(dat2, pch = 20, cex = 0.1)
+```
+

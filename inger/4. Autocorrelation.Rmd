@@ -1,0 +1,83 @@
+---
+title: "Autocorrelation-Concept and Elementary Measures"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+---
+
+```{r, include = FALSE}
+library(spatstat)
+library(sp)
+library(gstat)
+library(jpeg)
+library(imager)
+library(sf)
+library(spdep)
+library(tmap)
+library(terra)
+```
+
+# Autocorrelation
+
+*spatial autocorrelation*: correlation between $Z(s_i)$ and $Z(s_j)$ (the same attribute)
+
+*positive spatial autocorrelation*: closer = similar attribute values; create a visual clustering in 3D - $(x,y,Z(s = (x,y)))$. 
+
+What is the degree to which data are autocorrelated? 
+
+# Moran's I:
+
+For continuous attribute  $Z$ with $E[Z(s)] = \mu$ as well as constant variance:
+
+\[I = \frac{n}{(n-1)s^2 w_{..}} \sum_{i=1}^n \sum_{j=1}^n w_{ij} (Z(s_i) - \bar{Z})(Z(s_j)-\bar{Z})\]
+\[\textrm{ where } w_{..} = \sum_i \sum_j w_{ij}\]
+
+- If $I > \frac{-1}{n-1}$: a location tends to be connected to locations with similar attribute values.
+
+- If $I < \frac{-1}{n-1}$: attribute values at locations connected to a particular location tend to be dissimilar 
+
+- Local Moran (Anselin 1995): \[I_i = n (Z_i - \bar{Z}) \frac{\sum_j w_{ij} (Z_j - \bar{Z})}{\sum_i (Z_i - \bar{Z})^2}\]
+
+
+# Moran's I:
+```{r, out.width= "60%"}
+
+Can <- st_read("scottish_lip_cancer.shp")
+plot(Can)
+nb <- poly2nb(Can, queen=TRUE)
+weights<-nb2listw(nb, style="W")
+moran.test(Can$SMR, weights)
+moran.mc(Can$SMR, weights, nsim = 999)
+m <- localmoran(Can$SMR, weights)
+image(m)
+
+nb <- poly2nb(Can, queen=FALSE)
+weights<-nb2listw(nb, style="W")
+moran.test(Can$SMR, weights)
+moran.mc(Can$SMR, weights, nsim = 999)
+m <- localmoran(Can$SMR, weights)
+image(m)
+```
+
+# Geary's C:
+
+For continuous attribute  $Z$ with $E[Z(s)] = \mu$ as well as constant variance we have a type of autocorrelation measure:
+
+\[C = \frac{1}{2S^2 w_{..}} \sum_{i=1}^n 
+\sum_{j=1}^n w_{ij} \left(Z(s_i)-Z(s_j) \right)^2\]
+
+If $C>1$ the locations are connected to locations with dissimilar values and vice versa for $C<1$. 
+
+The constant mean and variance is important: if this is not true the similarity/dissimilarity is more likely due to the heterogeneous mean and variance. 
+
+
+
+
+# Geary's C:
+```{r, out.width= "60%"}
+g <- geary(x=Can$SMR,listw=weights,n=56,n1=55,Szero(weights))
+g$C
+```
+
+
+
