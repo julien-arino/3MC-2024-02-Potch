@@ -58,4 +58,5 @@ See the slides [here](assets/pdf/3MC_school_2024_Patrick.pdf).
 ### Slides Stéphanie
 
 1. [Introduction to modelling](assets/pdf/Portet_2024_1_2.pdf)
+2. [Beyond mathematical analysis](assets/pdf/Portet_2024_3.pdf)
 
