@@ -55,6 +55,8 @@ I have some "vignettes" about `R` [here](https://julien-arino.github.io/R-for-mo
 
 See the slides [here](assets/pdf/3MC_school_2024_Patrick.pdf).
 
+### Slides Sandrine
+
 ### Slides Stéphanie
 
 1. [Introduction to modelling](assets/pdf/Portet_2024_1_2.pdf)
