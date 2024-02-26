@@ -70,36 +70,36 @@ We use here continuous random variables. See chapters 12 and 13 in \href{https:/
 
 \subsection{Distributions of times to events}
 \begin{frame}\frametitle{Time to events}
-We suppose that a system can be in two states, $S_1$ and $S_2$
+We suppose that a system can be in two states, $S_0$ and $S_2$
 \begin{itemize}
-\item At time $t=0$, the system is in state $S_1$
+\item At time $t=0$, the system is in state $S_0$
 \item An event happens at some time $t=\tau$, which triggers the switch from
-state $S_1$ to state $S_2$
+state $S_0$ to state $S_1$
 \end{itemize}
 \vfill
 Let us call $T$ the random variable 
 \begin{quote}
-``time spent in state $S_1$ before switching into state $S_2$''
+``time spent in state $S_0$ before switching into state $S_1$''
 \end{quote}
 \end{frame}
 
 \begin{frame}
 The states can be anything:
 \begin{itemize}
-\item $S_1$: working, $S_2$: broken
-\item $S_1$: infected, $S_2$: recovered
-\item $S_1$: alive, $S_2$: dead
+\item $S_0$: working, $S_1$: broken
+\item $S_0$: infected, $S_1$: recovered
+\item $S_0$: alive, $S_1$: dead
 \item $\ldots$
 \end{itemize}
 \vfill
-We take a collection of objects or individuals that are in state $S_1$ and want
-some law for the \textbf{distribution} of the times spent in $S_1$, i.e., a law for $T$
+We take a collection of objects or individuals that are in state $S_0$ and want
+some law for the \textbf{distribution} of the times spent in $S_0$, i.e., a law for $T$
 \vfill
 For example, we make light bulbs and would like to tell our customers that on
 average, our light bulbs last 200 years..
 \vfill
 For this, we conduct an \textbf{infinite} number of experiments, and observe the
-time that it takes, in every experiment, to switch from $S_1$ to $S_2$
+time that it takes, in every experiment, to switch from $S_0$ to $S_1$
 \end{frame}
 
 \maxFrameImage{FIGS/random_length_sample}
@@ -142,7 +142,7 @@ F(s)=\IP(T\leq s)=\int_{-\infty}^sf(x)dx
 Another characterization of the distribution of the random variable
 $T$ is through the \textbf{survival} (or \textbf{sojourn}) function
 \vfill
-The survival function of state $S_1$ is given by 
+The survival function of state $S_0$ is given by 
 \begin{equation}
   \S(t)=1-F(t)=\IP(T>t)
   \label{eq:survival}
@@ -156,7 +156,7 @@ $\S(0)=1$ (since $T$ is a nonnegative random variable)
 \end{frame}
 
 \begin{frame}
-The \textbf{average sojourn time} $\tau$ in state $S_1$ is given by
+The \textbf{average sojourn time} $\tau$ in state $S_0$ is given by
 \[
 \tau=E(T)=\int_0^\infty tf(t)dt
 \]
@@ -243,7 +243,7 @@ $$
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\subsection{Two ``extreme'' distributions}
+\subsection{Two ``extreme'' distributions and a nicer one}
 
 \begin{frame}\frametitle{The exponential distribution}
 The random variable $T$ has an \textbf{exponential} distribution if its
@@ -254,8 +254,8 @@ f(t)=\begin{cases}0&\textrm{if }t<0,\\
 \end{cases}
 \end{equation}
 with $\theta>0$. Then the
-survival function for state $S_1$ is of the form $\S(t)=e^{-\theta
-  t}$, for $t\geq 0$, and the average sojourn time in state $S_1$ is
+survival function for state $S_0$ is of the form $\S(t)=e^{-\theta
+  t}$, for $t\geq 0$, and the average sojourn time in state $S_0$ is
 \[
 \tau=\int_0^\infty e^{-\theta t}dt=\frac 1\theta
 \]
@@ -290,9 +290,39 @@ $\delta_\omega(t)$, then the average sojourn time is
 \[
 \tau=\int_0^\omega dt=\omega
 \]
+with standard deviation $\sigma=0$
 \end{frame}
 
+\begin{frame}{The Gamma distribution}
+R.v. $X$ is \defword{Gamma} distributed ($X\,\sim\Gamma(k, \theta)$) with \defword{shape parameter} $k$ and \defword{scale parameter} $\theta$ (or \defword{rate} $\beta = 1/\theta$) (all positive) if its probability density function takes the form
+\begin{equation}\label{eq:gamma_distrib}
+f(x;k,\theta) = \frac{x^{k-1} \mathrm{e}^{-\frac{x}{\theta}}}{\Gamma ( k)\theta ^k}
+\end{equation}
+where $x>0$ and $\Gamma$ is the Euler Gamma function, defined for all $z\in\mathbb{C}$ s.t. $\Re(z) > 0$ by
+\[
+\Gamma : z \mapsto \int_0^{+\infty}  t^{z-1}\,\mathrm{e}^{-t}\,\mathrm{d}t
+\]
+\end{frame}
 
+\begin{frame}{Properties of the Gamma distribution}
+Mean $k\theta$, variance $k\theta^2$
+\vfill
+Survival function
+\[
+\mathcal{S}(t)=
+1-\frac{1}{\Gamma(k)}\gamma\left(
+k,\frac{t}{\theta} 
+\right)
+=1-\frac{1}{\Gamma(k)}\gamma\left(
+k,\beta t
+\right)
+\]
+where 
+\[
+\gamma(a,x)=\int_0^x t^{a-1}{\rm e}^{-t}{\rm d}t
+\]
+is an incomplete Gamma function
+\end{frame}
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -389,10 +419,10 @@ Here, $N'=0$ everywhere except at $t=\omega$, where it is undefined
 \begin{theorem}
 Let $X_i$ be independent exponentially distributed random variables with parameter $\xi$ and $Y = \sum_{i=1}^n X_i$
 \vskip1cm
-Then the random variable $Y\rightsquigarrow E(n,\xi)$, an Erlang distribution with $n$ the \emph{shape} parameter and $\xi$ the \emph{scale} parameter
+Then the random variable $Y\rightsquigarrow E(n,\xi)$, an Erlang distribution with \emph{shape} parameter $n$ and \emph{scale} parameter $\xi$
 \end{theorem}
 \vfill
-(An Erlang distribution is a Gamma distribution with integer scale parameter)
+(Erlang distribution: Gamma distribution with integer shape parameter)
 \end{frame}
 
 \begin{frame}{Consequences for compartmental models}
@@ -1111,7 +1141,8 @@ for $\sigma<1$, and
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\begin{frame}\frametitle{Visualising and locating the bifurcation}
+\begin{frame}
+\frametitle{Visualising and locating the bifurcation}
 From the nullcline equations, an EEP exists iff there exists an
 $I^\star\in(0,1]$ such that equations (\ref{eq:f_egal_g})-(\ref{eq:g(I)})
 hold.
