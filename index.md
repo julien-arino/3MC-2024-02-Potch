@@ -25,6 +25,9 @@ Html produced from Rmarkdown files. You can find the Rmarkdown files in the `ing
 
 ### Slides Jacek
 
+[A short introduction to partial differential
+equations with applications in life sciences](assets/pdf/Jacek-Potch2024a.pdf)
+
 ### Slides James
 
 You can find James' slides on his [web page](https://jameswatmough.github.io/teaching/).

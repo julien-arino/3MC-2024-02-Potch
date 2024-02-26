@@ -2527,7 +2527,7 @@ tictoc::toc()
 \begin{frame}\frametitle{Age of infection/vaccination}
 We have seen that infinite dimensionality could result from a detailed description (or an unspecified one) of the sojourn time in compartments
 \vfill
-We used age of vaccination to find the initial condition of system \eqref{sys:SIVS_general}
+We used age of vaccination to find the initial condition of \eqref{sys:SIVS_general}
 \vfill
 Here we take a closer look at this type of model
 \vfill
@@ -2535,6 +2535,22 @@ Originally, age of infection was introduced to account for differences in infect
 \vfill
 For instance, it is known that infectiousness of HIV positive patients vary as a function of time
 \end{frame}
+
+\begin{frame} 
+\begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=center, 
+    inner sep=0pt,
+    opacity=0.95] (image) at (current page.center) 
+    {\includegraphics[height=\paperheight, keepaspectratio]{FIGS/Pierre-Magal.jpg}};
+   \node[anchor=north, 
+   align=center, 
+   text=black, 
+   font=\Huge] at (image.north) 
+   {Pierre Magal (1967--2024)}; 
+\end{tikzpicture}
+\end{frame}
+
+
 
 \maxFrameImage{FIGS/BowmanArinoMoghadas-2011-cover.png}
 
