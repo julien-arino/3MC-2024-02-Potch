@@ -60,6 +60,11 @@ See the slides [here](assets/pdf/3MC_school_2024_Patrick.pdf).
 
 ### Slides Sandrine
 
+1. [The cells](https://drive.google.com/file/d/1MlZjOeHxFeUZ-Uq0OqtntGmBkNyAXnyn/view?usp=sharing)
+2. [Viruses, cell parasites](assets/pdf/Sandrine-2-Virology.pdf)
+3. [Cancers](assets/pdf/Sandrine-3-Cancers.pdf)
+
+
 ### Slides Stéphanie
 
 1. [Introduction to modelling](assets/pdf/Portet_2024_1_2.pdf)
