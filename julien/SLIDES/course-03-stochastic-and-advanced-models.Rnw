@@ -48,6 +48,22 @@ source("../CODE/useful_functions.R")
 \addtocounter{page}{-1}
 }
 
+\begin{frame} 
+\begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=center, 
+    inner sep=0pt,
+    opacity=0.95] (image) at (current page.center) 
+    {\includegraphics[height=\paperheight, keepaspectratio]{FIGS/Pierre-Magal.jpg}};
+   \node[anchor=north, 
+   align=center, 
+   text=black, 
+   font=\Huge] at (image.north) 
+   {Pierre Magal\\(1968 -- 2024-02-20)}; 
+\end{tikzpicture}
+\end{frame}
+
+
+
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -93,31 +109,64 @@ The states can be anything:
 \end{itemize}
 \vfill
 We take a collection of objects or individuals that are in state $S_0$ and want
-some law for the \textbf{distribution} of the times spent in $S_0$, i.e., a law for $T$
+some law for the \defword{distribution} of the times spent in $S_0$, i.e., a law for $T$
 \vfill
-For example, we make light bulbs and would like to tell our customers that on
-average, our light bulbs last 200 years..
+For example, we make light bulbs and would like to tell our customers that on average, our light bulbs last 200 years...
 \vfill
-For this, we conduct an \textbf{infinite} number of experiments, and observe the
-time that it takes, in every experiment, to switch from $S_0$ to $S_1$
+We conduct an \defword{infinite} number of experiments, and observe the time that it takes, in every experiment, to switch from $S_0$ to $S_1$
 \end{frame}
 
-\maxFrameImage{FIGS/random_length_sample}
+\begin{frame}
+\begin{center}
+	\begin{tikzpicture}[auto, %node distance = 2cm, auto,
+	scale=0.8, every node/.style={transform shape},
+	cloud/.style={minimum width={width("XN-1")+2pt},
+	draw, ellipse,fill=blue!20}]
+	\node [cloud] (S0_1) at (0,0) {$S_0$};
+	\node [cloud] (S1_1) at (2,0) {$S_1$};
+	\node [cloud] (S0_2) at (0,-1) {$S_0$};
+	\node [cloud] (S1_2) at (2.5,-1) {$S_1$};
+	\node [cloud] (S0_3) at (0,-2) {$S_0$};
+	\node [cloud] (S1_3) at (3.5,-2) {$S_1$};
+	\node [cloud] (S0_4) at (0,-3) {$S_0$};
+	\node [cloud] (S1_4) at (1.5,-3) {$S_1$};
+	%%
+	\node [cloud] (S0_10) at (0,-5) {$S_0$};
+	\node [cloud] (S1_10) at (5.5,-5) {$S_1$};
+	%%
+	\node [cloud] (S0_15) at (0,-7) {$S_0$};
+	\node [cloud] (S1_15) at (5,-7) {$S_1$};
+	%% Arrows
+	\path [line, very thick] (S0_1) to (S1_1);
+	\path [line, very thick] (S0_2) to (S1_2);
+	\path [line, very thick] (S0_3) to (S1_3);
+	\path [line, very thick] (S0_4) to (S1_4);
+	\path [line, very thick] (S0_10) to (S1_10);
+	\path [line, very thick] (S0_15) to (S1_15);
+	%%
+	\draw [-,-, dashed, thick] (S0_4) -- (S0_10);
+	\draw [-,-, dashed, thick] (S0_10) to (S0_15);
+	\draw [-,-, dashed, thick] (S0_15) to (0,-8);
+	%% The time arrow
+	\path [line, very thick] (0,-8.35) to (7,-8.35);
+	\node[anchor=north, align=center,text=black] at (6,-8.5)
+	{time}; 
+	\node[anchor=north, align=center,text=black] at (0,-8.5)
+	{$0$}; 
+	\end{tikzpicture}
+\end{center}
+\end{frame}
+
 
 \begin{frame}\frametitle{A distribution of probability is a model}
-From the sequence of experiments, we deduce a model, which in this context is called a \textbf{probability distribution}
+From the sequence of experiments, we deduce a model, which in this context is called a \defword{probability distribution}
 \vfill
-We assume that $T$ is a \textbf{continuous} random variable
-% \vskip0.2cm
-% [Formally, given the space $\Omega$ endowed with $\sigma$-algebra $\mathcal{F}$, $\mathcal{P}$ is a measure from $(\Omega,\mathcal{F})$ to $[0,1]$ that is such that 1) $\mathcal{P}(\Omega)=1$, 2) if $\Lambda,\Lambda'\in\mathcal{F}$ are disjoint, then $\mathcal{P}(\Lambda\cup\Lambda')
-% =\mathcal{P}(\Lambda)+\mathcal{P}(\Lambda')$ and 3) if $\Lambda_n$, $n\in\mathbb{N}$, is an increasing sequence of elements of $\mathcal{F}$, then $\mathcal{P}(\cup\Lambda_n)=\lim_{n\to\infty}\mathcal{P}(\Lambda_n)$.
-% (The last property is called $\sigma$-additivity.).]
+We assume that $T$ is a \defword{continuous} random variable
 \end{frame}
 
 
 \begin{frame}\frametitle{Probability density function}
-Since $T$ is continuous, it has a continuous \textbf{probability density
-function} $f$
+Since $T$ is continuous, it has a continuous \defword{probability density function} $f$
 \begin{itemize}
 \item $f\geq 0$
 \item $\int_{-\infty}^{+\infty}f(s)ds=1$
@@ -139,15 +188,14 @@ F(s)=\IP(T\leq s)=\int_{-\infty}^sf(x)dx
 \end{frame}
 
 \begin{frame}\frametitle{Survival function}
-Another characterization of the distribution of the random variable
-$T$ is through the \textbf{survival} (or \textbf{sojourn}) function
+Another characterization of the distribution of the random variable $T$ is through the \defword{survival} (or \defword{sojourn}) function
 \vfill
 The survival function of state $S_0$ is given by 
 \begin{equation}
   \S(t)=1-F(t)=\IP(T>t)
   \label{eq:survival}
 \end{equation}
-This gives a description of the \textbf{sojourn time} of a
+This gives a description of the \defword{sojourn time} of a
 system in a particular state (the time spent in the state)
 \vfill
 $\S$ is a nonincreasing function (since $\S=1-F$
@@ -156,7 +204,7 @@ $\S(0)=1$ (since $T$ is a nonnegative random variable)
 \end{frame}
 
 \begin{frame}
-The \textbf{average sojourn time} $\tau$ in state $S_0$ is given by
+The \defword{average sojourn time} $\tau$ in state $S_0$ is given by
 \[
 \tau=E(T)=\int_0^\infty tf(t)dt
 \]
@@ -165,7 +213,7 @@ Since $\lim_{t\to\infty}t\S(t)=0$, it follows that
 \tau=\int_0^\infty \S(t)dt
 \]
 \vfill
-\textbf{Expected future lifetime}:
+\defword{Expected future lifetime}:
 \[
 \frac{1}{\S(t_0)} \int_0^{\infty} t\,f(t+t_0)\,dt 
 \]
@@ -178,7 +226,7 @@ Since $\lim_{t\to\infty}t\S(t)=0$, it follows that
 \end{frame}
 
 \begin{frame}\frametitle{Hazard rate}
-The \textbf{hazard rate} (or \textbf{failure rate}) is
+The \defword{hazard rate} (or \defword{failure rate}) is
 \begin{align*}
 h(t) &= \lim_{\Delta t\to 0}\frac{\S(t)-\S(t+\Delta t)}{\Delta t} \\
 & = \lim_{\Delta t\to 0} \frac{\IP{ T<t+\Delta t | T\geq
@@ -246,7 +294,7 @@ $$
 \subsection{Two ``extreme'' distributions and a nicer one}
 
 \begin{frame}\frametitle{The exponential distribution}
-The random variable $T$ has an \textbf{exponential} distribution if its
+The random variable $T$ has an \defword{exponential} distribution if its
 probability density function takes the form
 \begin{equation}\label{eq:exp_distrib}
 f(t)=\begin{cases}0&\textrm{if }t<0,\\
@@ -264,7 +312,7 @@ survival function for state $S_0$ is of the form $\S(t)=e^{-\theta
 \begin{frame}\frametitle{Particularities of the exponential distribution}
 The standard deviation of an exponential distribution is also $1/\theta$. When estimating $\theta$, it is impossible to distinguish the mean and the standard deviation
 \vfill
-The exponential distribution is \textbf{memoryless}: its conditional probability obeys
+The exponential distribution is \defword{memoryless}: its conditional probability obeys
 \[
 P(T > s + t\; |\; T > s) = P(T > t),\quad\forall s, t \ge 0
 \]
@@ -323,6 +371,8 @@ where
 \]
 is an incomplete Gamma function
 \end{frame}
+
+
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -330,7 +380,7 @@ is an incomplete Gamma function
 \subsection{A simple cohort model with death} 
 
 \begin{frame}\frametitle{A model for a cohort with one cause of death}
-Consider a \textbf{cohort} of individuals born at the same time, e.g., the same year
+Consider a \defword{cohort} of individuals born at the same time, e.g., the same year
 \vfill
 \begin{itemize}
 \item At time $t=0$, there are initially $N_0>0$ individuals
@@ -409,11 +459,157 @@ Here, $N'=0$ everywhere except at $t=\omega$, where it is undefined
 \end{frame}
 
 
+<<prop_surviving_dirac_80years,eval=TRUE,echo=FALSE,fig=TRUE,width=8,height=6,include=FALSE>>=
+plot_blackBG = FALSE
+if (plot_blackBG) {
+  par(bg = 'black', fg = 'white') # set background to black, foreground white
+  colour = "white"
+} else {
+  colour = "black"
+}
+plot(0:80, rep(1, length(0:80)), lwd = 2, 
+     xlim = c(0, 150), ylim = c(0,1), 
+     col = colour,
+     xlab = "Age (years)", 
+     ylab = "Proportion of cohort surviving",
+     type = "l")
+lines(80:150, rep(0, length(80:150)), 
+      lwd = 2, col = colour, type = "l")
+abline(v = 80,
+       col = "red", lwd = 2)
+grid(lwd=2)
+@
+
+\begin{frame}
+Survival function, $\S(t)=\IP(T>t)$, for a Dirac distribution with mean 80 years
+\begin{center}
+\includegraphics[width=0.8\textwidth]{FIGS/course-03-prop_surviving_dirac_80years}
+\end{center}
+\end{frame}
+
+
+
+
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 \subsection{A possible fix to the exponential distribution issue} 
+
+<<prop_surviving_exp_80years_details,eval=TRUE,echo=FALSE,fig=TRUE,width=8,height=6,include=FALSE>>=
+if (plot_blackBG) {
+  par(bg = 'black', fg = 'white') # set background to black, foreground white
+  colour = "white"
+} else {
+  colour = "black"
+}
+# Set paramaters
+d_1 = 1/80 
+y_1 = seq(0, 200, 0.1)
+S_1 = 1-pexp(y_1, d_1)
+d_2 = 1/4
+y_2 = seq(0, 20, 0.05)
+S_2 = 1-pexp(y_2, d_2)
+# Find some locations
+idx_50_years = max(which(y_1<=50))
+idx_80_years = max(which(y_1<=80))
+idx_100_years = min(which(y_1>=100))
+idx_150_years = min(which(y_1>=150))
+idx_1_days = max(which(y_2<=1))
+idx_10_days = max(which(y_2<=10))
+# Plot
+par(mfrow = c(1,2))
+plot(y_2, S_2,
+     type = "l", lwd = 3,
+     xaxs = "i", yaxs = "i",
+     ylim = c(0, 1.02),
+     xlab = "t (days)", ylab = "S(t)")
+abline(v = 4, lwd = 2, lty = 3, col = "red")
+lines(x = c(1, 1), y = c(0, S_2[idx_1_days]),
+      lty = 3, lwd = 1)
+lines(x = c(0, 1), y = c(S_2[idx_1_days], S_2[idx_1_days]),
+      lty = 3, lwd = 1)
+lines(x = c(10, 10), y = c(0, S_2[idx_10_days]),
+      lty = 3, lwd = 1)
+lines(x = c(0, 10), y = c(S_2[idx_10_days], S_2[idx_10_days]),
+      lty = 3, lwd = 1)
+points(x = 1, y = S_2[idx_1_days], pch = 19)
+points(x = 10, y = S_2[idx_10_days], pch = 19)
+text(x = 1, y = S_2[idx_1_days], 
+     labels = paste0(round(S_2[idx_1_days], 2)),
+     pos = 4)
+text(x = 10, y = S_2[idx_10_days], 
+     labels = paste0(round(S_2[idx_10_days], 2)),
+     pos = 3)
+text(x = 4, y = 0.8, 
+     labels = "Avg. 4 days", col = "red",
+     pos = 4)
+
+plot(y_1, S_1,
+     type = "l", lwd = 3,
+     xaxs = "i", yaxs = "i",
+     ylim = c(0, 1.02),
+     xlab = "t (years)", ylab = "S(t)")
+abline(v = 80, lwd = 2, lty = 3, col = "red")
+lines(x = c(50, 50), y = c(0, S_1[idx_50_years]),
+      lty = 3, lwd = 1)
+lines(x = c(0, 50), y = c(S_1[idx_50_years], S_1[idx_50_years]),
+      lty = 3, lwd = 1)
+lines(x = c(100, 100), y = c(0, S_1[idx_100_years]),
+      lty = 3, lwd = 1)
+lines(x = c(0, 100), y = c(S_1[idx_100_years], S_1[idx_100_years]),
+      lty = 3, lwd = 1)
+lines(x = c(150, 150), y = c(0, S_1[idx_150_years]),
+      lty = 3, lwd = 1)
+lines(x = c(0, 150), y = c(S_1[idx_150_years], S_1[idx_150_years]),
+      lty = 3, lwd = 1)
+points(x = 50, y = S_1[idx_50_years], pch = 19)
+points(x = 100, y = S_1[idx_100_years], pch = 19)
+points(x = 150, y = S_1[idx_150_years], pch = 19)
+text(x = 50, y = S_1[idx_50_years], 
+     labels = paste0(round(S_1[idx_50_years], 2)),
+     pos = 4)
+text(x = 100, y = S_1[idx_100_years], 
+     labels = paste0(round(S_1[idx_100_years], 2)),
+     pos = 3)
+text(x = 150, y = S_1[idx_150_years], 
+     labels = paste0(round(S_1[idx_150_years], 2)),
+     pos = 3)
+text(x = 80, y = 0.8, 
+     labels = "Avg. 80 years", col = "red",
+     pos = 4)
+@
+
+\begin{frame}{Survival for the exponential distribution}
+\begin{center}
+\includegraphics[width=\textwidth]{FIGS/course-03-prop_surviving_exp_80years_details}
+\end{center}
+\end{frame}
+
+\begin{frame}{Issues with the exponential distribution}
+\bbullet Survival drops quickly
+\vfill
+\bbullet Survival continues way beyond the mean
+\vfill
+Acceptable if what matters is the average duration of sojourn in a compartment (e.g., long term dynamics)
+\vfill
+More iffy if one is interested in short-term dynamics
+\vfill
+\bbullet Exponential distribution with parameter $\theta$ has same mean and standard deviation $1/\theta$, i.e., a single parameter controls mean and dispersion about the mean
+\end{frame}
+
+\begin{frame}{Exponential distributions are bad but also cool}
+$X_1$ and $X_2$ 2 i.i.d. (independent and identically distributed) r.v. with parametres $\theta_1$ and $\theta_2$. Then the probability density function of the r.v. $Z=X_1+X_2$ is given by the convolution
+\begin{align}
+ f_Z(z) &= \int_{-\infty}^\infty f_{X_1}(x_1) f_{X_2}(z - x_1)\,dx_1 \nonumber\\
+   &= \int_0^z \theta_1 e^{-\theta_1 x_1} \theta_2 e^{-\theta_2(z - x_1)} \, dx_1 \nonumber\\
+   &= \theta_1 \theta_2 e^{-\theta_2 z} \int_0^z e^{(\theta_2 - \theta_1)x_1}\,dx_1 \nonumber\\
+   &= \begin{cases}
+        \dfrac{\theta_1 \theta_2}{\theta_2-\theta_1} \left(e^{-\theta_1 z} - e^{-\theta_2 z}\right) & \text{ if } \theta_1 \neq \theta_2 \\
+        \theta^2 z e^{-\theta z} & \text{ if } \theta_1 = \theta_2 =: \theta
+      \end{cases}
+\end{align}
+\end{frame}
 
 \begin{frame}{The tool we use}
 \begin{theorem}
@@ -429,125 +625,136 @@ Then the random variable $Y\rightsquigarrow E(n,\xi)$, an Erlang distribution wi
 If $n$ compartments are traversed successively by individuals, with each compartment having an outflow rate of $1/\xi$ (or a mean sojourn time of $\xi$), then the time of sojourn from entry into the first compartment to exit from the last is Erlang distributed with mean $E(Y)=n\xi$ and variance $\mathsf{Var}(Y)=n\xi^2$
 \vfill
 \begin{center}
-	\begin{tikzpicture}[auto, %node distance = 2cm, auto,
-	cloud/.style={minimum width={width("XN-1")+2pt},
-		draw, ellipse,fill=red!20}]
-	\node [cloud] (X) {$X$};
-	%% Outflows
-	\path [line, very thick] (X) -- node [midway, above] (TextNode) {$1/\xi$} + (0:1.5cm);
-	\end{tikzpicture}
-	\begin{tikzpicture}[auto, %node distance = 2cm, auto,
-	cloud/.style={minimum width={width("XN-1")+2pt},
-		draw, ellipse,fill=red!20}]
-	\node [cloud] (X1) {$X_1$};
-	\node [cloud, right=of X1] (X2) {$X_2$};
-	\node [cloud, right=2cm of X2] (Xnm1) {$X_{n-1}$};
-	\node [cloud, right=of Xnm1] (Xn) {$X_n$};
-	%% Flows
-	\path [line, very thick] (X1) to node [midway, above] (TextNode) {$1/\xi$} (X2);
-	\path [line, very thick, dashed] (X2) to (Xnm1);
-	\path [line, very thick] (Xnm1) to node [midway, above] (TextNode) {$1/\xi$} (Xn);
-	\path [line, very thick] (Xn) -- node [midway, above] (TextNode) {$1/\xi$} + (0:1.5cm);
-	\end{tikzpicture}
+\def\skip{*3}
+\begin{tikzpicture}[scale=0.5, 
+every node/.style={transform shape},
+auto,
+box/.style={minimum size=1.5cm, 
+draw=black, very thick},
+draw, circle]
+%% States (imported original variants)
+\node [box, fill=gray!20] at (0\skip,8) (X) {$X$};
+\node [box, fill=gray!20] at (0\skip,4) (X1) {$X_{1}$};
+\node [box, fill=gray!20] at (1\skip,4) (X2) {$X_{2}$};
+\node [box, fill=gray!20] at (3\skip,4) (Xk) {$X_{k}$};
+\node [box, fill=gray!20] at (5\skip,4) (XNm1) {$X_{N-1}$};
+\node [box, fill=gray!20] at (6\skip,4) (XN) {$X_{N}$};
+% Metabox
+\draw [blue,rounded corners, thick, fill=blue!40, fill opacity=0.2] (-0.5\skip,9) -- (7\skip,9) -- (7\skip, 7) -- (-0.5\skip, 7) -- cycle;
+\draw [blue,rounded corners, thick, fill=blue!40, fill opacity=0.2] (-0.5\skip,5) -- (7\skip,5) -- (7\skip, 3) -- (-0.5\skip, 3) -- cycle;
+%% Flows (exponential box)
+\path [line, very thick] (X) to node [midway, above] (TextNode) {$\mu X$} (7\skip,8);
+%% Flows (Erlang box)
+\path [line, very thick] (X1) to node [midway, above] (TextNode) {$\varepsilon X_1$} (X2);
+\path [line, very thick] (X2) to node [midway, above] (TextNode) {$\varepsilon X_2$} (2\skip,4);
+\path [line, very thick] (4\skip,4) to node [midway, above] (TextNode) {$\varepsilon X_{N-2}$} (XNm1);
+\path [line, very thick] (XNm1) to node [midway, above] (TextNode) {$\varepsilon X_{N-1}$} (XN);
+\path [line, very thick] (XN) to node [midway, above] (TextNode) {$\varepsilon X_{N}$} (7\skip,4);
+%% To and from centre node
+\path [line, very thick, dashed] (2.25\skip,4) to node [midway, above] (TextNode) {} (Xk);
+\path [line, very thick, dashed] (Xk) to node [midway, above] (TextNode) {} (3.75\skip,4);
+%% Time lines
+\draw [|-|, thick] (0\skip,6.5) -- (7\skip,6.5);
+\draw [|-|, thick] (0\skip,2.5) -- (7\skip,2.5);
+%% Labels of time lines 
+\node at (6\skip,2) {Average sojourn time $N/\varepsilon$};
+\node at (6\skip,6) {Average sojourn time $1/\mu$};
+\end{tikzpicture}
 \end{center}
+\vfill
+I have a \href{https://daytah-or-dahtah.ovh:3838/Erlang_shiny/}{Shiny app} for this :)
+\end{frame}
+
+\begin{frame}{Example: EVD incubation periods}
+Consider the incubation period for Ebola Virus Disease. During the 2014 EVD crisis in Western Africa, the WHO Ebola Response Team estimated incubation periods in a 2015 paper
+\vfill
+Table S2 in the Supplementary Information in that paper gives the best fit for the distribution of incubation periods for EVD as a Gamma distribution with mean 10.3 days and standard deviation 8.2, i.e., $n\varepsilon = 10.3$ and $\varepsilon \sqrt{n}=8.2$
+\vfill
+From this, $\varepsilon = 8.2^2/10.3 \simeq 6.53$ and $n = 10.3^2/8.2^2 \simeq 1.57$. However, that is a Gamma distribution
+\end{frame}
+
+\begin{frame}[fragile]{Switching to a compartmental model approach}
+To use multiple compartments to better fit residence times, we need to find the closest possible Erlang distribution to this Gamma distribution
+\vfill
+$\implies$ compute RSS errors between data points generated from the given Gamma distribution and an Erlang
+\vfill 
+<<error_Gamma,eval=TRUE,echo=TRUE>>=
+error_Gamma <- function(theta,shape,t,d) {
+  test_points <- dgamma(t, shape = shape, scale = theta)
+  ls_error <- sum((d-test_points)^2)
+  return(ls_error)
+}
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<optimise_gamma>>=
+optimize_gamma <- function(t,d) {
+  max_shape <- 10
+  error_vector <- mat.or.vec(max_shape,1)
+  scale_vector <- mat.or.vec(max_shape,1)
+  for (i in 1:max_shape) {
+    result_optim <- try(optim(par = 3,
+                              fn = error_Gamma,
+                              lower = 0,
+                              method = "L-BFGS-B",
+                              shape = i,
+                              t = t,
+                              d = d),
+                        TRUE)
+    if (!inherits(result_optim,"try-error")) {
+      error_vector[i] <- result_optim$value
+      scale_vector[i] <- result_optim$par
+    } else {
+      error_vector[i] <- NaN
+      scale_vector[i] <- NaN
+    }
+  }
+  result_optim <- data.frame(seq(1,max_shape),
+                             scale_vector,
+                             error_vector)
+  colnames(result_optim) <- c("shape","scale","error")
+  result_optim <- result_optim[complete.cases(result_optim),]
+  return(result_optim)
+}
+@
 \end{frame}
 
 
-% 
-% ```{r a_few_Erlangs, echo=FALSE, fig.align='H',fig.cap="\\label{fig:different_erlangs}Erlang distributions with rate equal to 1 and shape parameters varying from 1 (yellow) to 10 (red). (a) Distribution. (b) Corresponding survival.",fig.subcap=c('\\label{fig:different_erlangs_distributions}Distribution', '\\label{fig:different_erlangs_survivals}Survival'),out.width='.49\\linewidth'}
-% my_palette = colorRampPalette(c("yellow", "red"))(n = 10)
-% t = seq(0,25,by = 0.1)
-% plot(t,dgamma(x=t, shape=1), type = "l",
-%      xlab = "t", ylab = "Distribution",
-%      col = my_palette[1])
-% for (s in 2:10) {
-%   lines(t,dgamma(x=t, shape=s), col = my_palette[s])
-% }
-% plot(t,1-pgamma(q=t, shape=1), type = "l",
-%      xlab = "t", ylab = "Survival",
-%      col = my_palette[1])
-% for (s in 2:10) {
-%   lines(t,1-pgamma(q=t, shape=s), col = my_palette[s])
-% }
-% ```
-% 
-% As an example of the use of adding compartments to fit known sojourn time distributions, let me consider the incubation period for Ebola Virus Disease. During the 2014 EVD crisis in Western Africa, the WHO Ebola Response Team estimated incubation periods in the paper [@WHORespTeam2015].
-% Table S2 in the Supplementary Information in that paper gives the best fit for the distribution of incubation periods for EVD as a Gamma distribution with mean 10.3 days and standard deviation 8.2, i.e., $n\varepsilon = 10.3$ and $\varepsilon \sqrt{n}=8.2$.
-% From this, I obtain that $\varepsilon = 8.2^2/10.3 \simeq 6.53$ and $n = 10.3^2/8.2^2 \simeq 1.57$. However, that is a Gamma distribution.
-% 
-% In order to fit within the context of using multiple compartments to better fit residence times, since the number of compartments is an integer I need to find the closest possible Erlang distribution to this Gamma distribution.
-% To do this, let me compute the square of errors between data points generated from the given Gamma distribution and an Erlang. The following function computes the square of the difference between data points $(t_i,d_i)$ and a Gamma distribution with shape `shape` and scale `theta`, evaluated at the same $t_i$. (To get an Erlang distribution, `shape` needs to be an integer.)
-% 
-% ```{r error_Gamma}
-% error_Gamma <- function(theta,shape,t,d) {
-%   test_points <- dgamma(t, shape = shape, scale = theta)
-%   ls_error <- sum((d-test_points)^2)
-%   return(ls_error)
-% }
-% ```
-% 
-% The following function takes as input data points $(t_i,d_i)$ and finds optimal scale and integer shape parameters (so an Erlang distribution) corresponding to these data points. Note that the shape parameter is (arbitrarily) limited to 10, i.e., I allow at most 10 compartments. Note that I use `try` to avoid issues linked to the potential non-success of the call to `optim`.
-% 
-% ```{r optimise_gamma}
-% optimize_gamma <- function(t,d) {
-%   max_shape <- 10
-%   error_vector <- mat.or.vec(max_shape,1)
-%   scale_vector <- mat.or.vec(max_shape,1)
-%   for (i in 1:max_shape) {
-%     result_optim <- try(optim(par = 3,
-%                               fn = error_Gamma,
-%                               lower = 0,
-%                               method = "L-BFGS-B",
-%                               shape = i,
-%                               t = t,
-%                               d = d),
-%                         TRUE)
-%     if (!inherits(result_optim,"try-error")) {
-%       error_vector[i] <- result_optim$value
-%       scale_vector[i] <- result_optim$par
-%     } else {
-%       error_vector[i] <- NaN
-%       scale_vector[i] <- NaN
-%     }
-%   }
-%   result_optim <- data.frame(seq(1,max_shape),
-%                              scale_vector,
-%                              error_vector)
-%   colnames(result_optim) <- c("shape","scale","error")
-%   result_optim <- result_optim[complete.cases(result_optim),]
-%   return(result_optim)
-% }
-% ```
-% 
-% Finally, I call the function above with parameters of the Gamma distribution as given in the paper. If you had your own data points, you could use them instead in the chunk below. (The points in time for your data would be in the vector `time_points`, while the corresponding values would be in `data_points`.)
-% 
-% ```{r run_optim_Erlang}
-% time_points <- seq(0,60)
-% data_points <- dgamma(time_points, shape = 1.57, scale = 6.53)
-% # Run the minimization
-% optim_fits <- optimize_gamma(time_points,data_points)
-% # Which is the best Erlang to fit the data
-% idx_best <- which.min(optim_fits$error)
-% ```
-% 
-% Now plot the result as well as the original curve, giving Figure \ref{fig:best_Erlang}  (code chunk not shown).
-% 
-% ```{r plot_results_optim_Erlang, echo=FALSE, fig.cap="\\label{fig:best_Erlang}Best Erlang fit of the Gamma given in \\cite{WHORespTeam2015}."}
-% time_points_plot <- seq(0,60,0.05)
-% found_points_plot <- dgamma(time_points_plot,
-%                             shape = optim_fits[idx_best,]$shape,
-%                             scale = optim_fits[idx_best,]$scale)
-% 
-% max_y <- max(max(data_points),max(found_points_plot))
-% plot(time_points,data_points, ylim = c(0,max_y),
-%      xlab = "Days", ylab = "Frequency", col = "red",pch = 16)
-% lines(time_points_plot,found_points_plot,
-%       type="l",lwd=2,col="blue")
-% legend("topright", legend = c("Data","Best Erlang fit"),
-%        col=c("red","blue"),
-%        lwd = c(1,2), lty = c(NA,1), pch = c(16,NA))
-% ```
-% 
+\begin{frame}[fragile]
+<<run_optim_Erlang>>=
+time_points <- seq(0,60)
+data_points <- dgamma(time_points, shape = 1.57, 
+                      scale = 6.53)
+# Run the minimization
+optim_fits <- optimize_gamma(time_points,data_points)
+# Which is the best Erlang to fit the data
+idx_best <- which.min(optim_fits$error)
+@
+\end{frame}
+
+<<plot_results_optim_Erlang,eval=TRUE,echo=FALSE,fig=TRUE,width=8,height=6,include=FALSE>>=
+time_points_plot <- seq(0,60,0.05)
+found_points_plot <- 
+  dgamma(time_points_plot,
+         shape = optim_fits[idx_best,]$shape,
+         scale = optim_fits[idx_best,]$scale)
+max_y <- max(max(data_points),max(found_points_plot))
+plot(time_points,data_points, ylim = c(0,max_y),
+     xlab = "Days", ylab = "Frequency", col = "red",pch = 16)
+lines(time_points_plot,found_points_plot,
+      type="l",lwd=2,col="blue")
+legend("topright", legend = c("Data","Best Erlang fit"),
+       col=c("red","blue"),
+       lwd = c(1,2), lty = c(NA,1), pch = c(16,NA))
+@
+
+\begin{frame}
+Now plot the result as well as the original curve  (code chunk not shown)
+\begin{center}
+\includegraphics[width=\textwidth]{FIGS/course-03-plot_results_optim_Erlang}
+\end{center}
+\end{frame}
 
 
 
@@ -570,7 +777,7 @@ If $n$ compartments are traversed successively by individuals, with each compart
 \item There is no birth or death (from the disease or natural) \newline\imply\;
 Constant total population $N\equiv N(t)=S(t)+I(t)$
 \vfill
-\item Infection is of \textbf{standard incidence} type
+\item Infection is of \defword{standard incidence} type
 \end{itemize}
 \end{frame}
 
@@ -633,7 +840,7 @@ Summing over $[0,t]$ gives the number of infective individuals at time $t$
 \begin{frame}\frametitle{Case of an exponentially distributed time to recovery}
 Suppose $P(t)$ such that sojourn time in the infective
 state has exponential distribution with mean $1/\gamma$,
-\textbf{i.e.}, $P(t)=e^{-\gamma t}$
+\textit{i.e.}, $P(t)=e^{-\gamma t}$
 \vfill
 Initial condition function $I_0(t)$ takes the form
 \[
@@ -658,10 +865,10 @@ I'(t) &= -\gamma I_0(0)e^{-\gamma t}-\gamma\int_0^t
 &= -\gamma\left(I_0(0)e^{-\gamma t}+
 \int_0^t \beta\frac{(N-I(u))I(u)}{N}e^{-\gamma(t-u)}du\right) \\
 &\quad +\beta \frac{(N-I(t))I(t)}{N} \\
-&= \beta \frac{(N-I(t))I(t)}{N}-\gamma I(t),
+&= \beta \frac{(N-I(t))I(t)}{N}-\gamma I(t)
 \end{align*}
-which is the classical logistic type ordinary differential equation
-(ODE) for $I$ in an SIS model without vital dynamics (no birth or death).
+\vfill
+This is the classical logistic type ordinary differential equation (ODE) for $I$ in an SIS model without vital dynamics (no birth or death)
 \end{frame}
 
 
@@ -675,14 +882,13 @@ P(t)=\begin{cases}
 \end{cases}
 \]
 i.e., the sojourn time in the infective state is a constant
-$\omega>0$.
- 
+$\omega>0$
+\vfill
 In this case (\ref{eq:SIS_I}) becomes
 \begin{equation}\label{eq:I_DDE}
 I(t)=I_0(t)+\int_{t-\omega}^t \beta\frac{(N-I(u))I(u)}{N} du.
 \end{equation}
-Here, it is more difficult to obtain an expression for $I_0(t)$. It is however
-assumed that $I_0(t)$ vanishes for $t>\omega$.
+Here, it is more difficult to obtain an expression for $I_0(t)$. It is however assumed that $I_0(t)$ vanishes for $t>\omega$
 \end{frame}
 
 \begin{frame}
@@ -722,7 +928,7 @@ I'(t)=\beta\frac{(N-I(t))I(t)}{N}
 \vfill
 \item Vaccination wanes, a fraction $P(t)$ of the vaccinated at time $t=0$ remain protected by the vaccine
 \vfill
-\item Vaccination is imperfect, $0\leq 1-\sigma\leq 1$ is the vaccine \textbf{efficacy}
+\item Vaccination is imperfect, $0\leq 1-\sigma\leq 1$ is the vaccine \defword{efficacy}
 \end{itemize}
 \end{frame}
 
@@ -785,7 +991,7 @@ function with $P(0^+)=1$, and such that $\int_0^\infty P(u)du$ is
 positive and finite
 \vfill
 Constant total population $\Rightarrow$ $S(t)=N-I(t)-V(t)$; further, we
-switch to \textbf{proportions}: $S$, $I$ and $V$ represent the
+switch to \defword{proportions}: $S$, $I$ and $V$ represent the
 proportions in the population, and $N=1$ ($S$ used in equations for
 conciseness)
 \end{frame}
@@ -1272,7 +1478,7 @@ A discrete-time Markov chain takes the form
 \[
 p(n+1)=p(n)P, \quad n=1,2,3,\dots
 \]
-where $p(n)=(p_1(n),p_{2}(n),\dots , p_r(n))$ is a (row) probability vector and $P=(p_{ij})$ is a $r\times r$ \textbf{transition matrix}
+where $p(n)=(p_1(n),p_{2}(n),\dots , p_r(n))$ is a (row) probability vector and $P=(p_{ij})$ is a $r\times r$ \defword{transition matrix}
 \[
 P=
 \begin{pmatrix}
@@ -1328,11 +1534,11 @@ $$
 
 \begin{frame}{Regular Markov chain}
     \begin{definition}
-        A \textbf{regular Markov chain} is one in which $P^k$ is positive for some integer $k>0$, i.e., $P^k$ has only positive entries, no zero entries
+        A \defword{regular Markov chain} is one in which $P^k$ is positive for some integer $k>0$, i.e., $P^k$ has only positive entries, no zero entries
     \end{definition}    
     \vfill
     \begin{definition}
-        A nonnegative matrix $M$ is \textbf{primitive} if, and only if, there is an integer $k>0$ such that $M^k$ is positive
+        A nonnegative matrix $M$ is \defword{primitive} if, and only if, there is an integer $k>0$ such that $M^k$ is positive
     \end{definition}
     \begin{theorem}
         A Markov chain is regular if, and only if, the transition matrix $P$ is primitive
@@ -1378,11 +1584,11 @@ $$
 
 \begin{frame}{Linking matrix and graph theory}
 \begin{definition}
-    A digraph $\mathcal{G}$ is \textbf{strongly connected} if there is a path between all pairs of vertices
+    A digraph $\mathcal{G}$ is \defword{strongly connected} if there is a path between all pairs of vertices
 \end{definition}
 \vfill
 \begin{definition}
-    A matrix $M\in\mathcal{M}_n$ is \textbf{irreducible} if there does not exist a matrix $P\in\mathcal{M}_n$ s.t. $P^{-1}AP$ block triangular 
+    A matrix $M\in\mathcal{M}_n$ is \defword{irreducible} if there does not exist a matrix $P\in\mathcal{M}_n$ s.t. $P^{-1}AP$ block triangular 
 \end{definition}
 \vfill
 \begin{theorem}
@@ -1563,13 +1769,13 @@ S_10  81  64  49  36  25  16   9   4   1    0
 
 \begin{frame}{Absorbing states, absorbing chains}
     \begin{definition}
-        A state $S_i$ in a Markov chain is \textbf{absorbing} if whenever it occurs on the $n^{th}$ generation of the experiment, it then occurs on every subsequent step. In other words, $S_i$ is absorbing if $p_{ii}=1$ and $p_{ij}=0$ for $i\neq j$
+        A state $S_i$ in a Markov chain is \defword{absorbing} if whenever it occurs on the $n^{th}$ generation of the experiment, it then occurs on every subsequent step. In other words, $S_i$ is absorbing if $p_{ii}=1$ and $p_{ij}=0$ for $i\neq j$
     \end{definition}
     \begin{definition}
-        A \textbf{Markov chain is absorbing} if it has at least one absorbing state, and if from every state it is possible to go to an absorbing state
+        A \defword{Markov chain is absorbing} if it has at least one absorbing state, and if from every state it is possible to go to an absorbing state
     \end{definition}
     \begin{definition}
-        In an absorbing Markov chain, a state that is not absorbing is called \textbf{transient}
+        In an absorbing Markov chain, a state that is not absorbing is called \defword{transient}
     \end{definition}
 \end{frame}
 
@@ -1608,8 +1814,8 @@ S_10  81  64  49  36  25  16   9   4   1    0
         \begin{tabular}{c|c|c|}
             & Absorbing states & Transient states \\
             \hline
-            \textbf{Absorbing states} & $\mathbb{I}_k$ & $\mathbf{0}$ \\
-            \textbf{Transient states} & $R$ & $Q$ 
+            \defword{Absorbing states} & $\mathbb{I}_k$ & $\mathbf{0}$ \\
+            \defword{Transient states} & $R$ & $Q$ 
         \end{tabular}
     \end{center}
     \vfill
@@ -1620,7 +1826,7 @@ S_10  81  64  49  36  25  16   9   4   1    0
 \begin{frame}
     The matrix $\mathbb{I}_{r-k}-Q$ is invertible. Let
 \begin{itemize}
-    \item $N=(\mathbb{I}_{r-k}-Q)^{-1}$ be the \textbf{fundamental matrix} of the Markov chain
+    \item $N=(\mathbb{I}_{r-k}-Q)^{-1}$ be the \defword{fundamental matrix} of the Markov chain
     \item $T_i$ be the sum of the entries on row $i$ of $N$
     \item $B=NR$
 \end{itemize}
@@ -1738,7 +1944,7 @@ See for instance book of \href{https://www.amazon.com/Finite-Markov-Chains-Lauri
     \end{pmatrix}
     $$
     \vfill
-    This is a \textbf{symmetric tridiagonal Toeplitz} matrix 
+    This is a \defword{symmetric tridiagonal Toeplitz} matrix 
     \vfill
     (symmetric: obvious; tridiagonal: there are three diagonal bands; Toeplitz: each diagonal band is constant)
     \vfill
@@ -2565,20 +2771,6 @@ Here we take a closer look at this type of model
 Originally, age of infection was introduced to account for differences in infectivity depending on the time since an individual became infected
 \vfill
 For instance, it is known that infectiousness of HIV positive patients vary as a function of time
-\end{frame}
-
-\begin{frame} 
-\begin{tikzpicture}[remember picture, overlay]
-    \node[anchor=center, 
-    inner sep=0pt,
-    opacity=0.95] (image) at (current page.center) 
-    {\includegraphics[height=\paperheight, keepaspectratio]{FIGS/Pierre-Magal.jpg}};
-   \node[anchor=north, 
-   align=center, 
-   text=black, 
-   font=\Huge] at (image.north) 
-   {Pierre Magal (1967--2024)}; 
-\end{tikzpicture}
 \end{frame}
 
 
