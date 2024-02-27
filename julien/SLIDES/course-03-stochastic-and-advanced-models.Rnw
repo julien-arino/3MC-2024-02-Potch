@@ -1152,11 +1152,8 @@ $V_0(t)=V_0(0)e^{-(d+\theta)t}e^{-\int_0^t\sigma\beta I(x)dx}$ from
 \label{ODEmodelV}
 \end{align}
 \end{subequations}
-which with no newborn vaccination ($\alpha=0$) is the model studied in
-Kribs-Zaletta \& Velasco-Hernandez, 2000 (extended to SIR with
-vaccination: Arino,
-McCluskey and van den Driessche).\\[0.2cm]
-
+which with no newborn vaccination ($\alpha=0$) is the model studied in Kribs-Zaletta \& Velasco-Hernandez, 2000
+\vfill
 From Theorem~\ref{th:R0_gen_mod} the DFE always exists, with
 \[
 I_{DFE}=0,
@@ -1213,16 +1210,13 @@ particular if the vaccine is totally effective ($\sigma=0$)
 By standard planar ODE arguments the following can be shown
 \vfill
 \begin{theorem}
-For the ODE system (\ref{ODEmodel}) with $V(0)\geq 0$, $I(0)>0$, and
-$\R_0>1$
+For the ODE system (\ref{ODEmodel}) with $V(0)\geq 0$, $I(0)>0$, and $\R_0>1$
 \vskip0.3cm
-(i) if $\R_v<\R_c$, then the disease dies out,
+(i) if $\R_v<\R_c$, then the disease dies out
 \vskip0.3cm
-(ii) if $\R_c<\R_v<1$, then the EEP
-with larger $I$ is l.a.s., and the EEP with smaller $I$ is unstable
+(ii) if $\R_c<\R_v<1$, then the EEP with larger $I$ is l.a.s., and the EEP with smaller $I$ is unstable
 \vskip0.3cm
-(iii) if $\R_v>1$, then the unique EEP is globally
-asymptotically stable in $\D-\{I=0\}$
+(iii) if $\R_v>1$, then the unique EEP is globally asymptotically stable in $\D\setminus\{I=0\}$
 \label{th:odecase}
 \end{theorem}
 \end{frame}
@@ -1232,8 +1226,7 @@ Pertussis:
 \begin{itemize}
 \item 3 week average disease duration ($\gamma=0.04762$)
 \item Average lifetime 75 years ($d=3.6530E-05$)
-\item Average number of adequate contacts per infective per day is
- estimated at 0.4 ($\beta=0.4$)
+\item Average number of adequate contacts per infective per day is estimated at 0.4 ($\beta=0.4$)
 \item Most newborns are vaccinated in the first few months of life
  ($\alpha=0.9$)
 \item  Vaccine is effective, $\sigma=0.1$ (90\% effective vaccine).
@@ -1297,6 +1290,7 @@ dimensional system, for $t>\omega$
   \right) \nonumber
 \end{align}
 \end{subequations}
+\vfill
 Hereafter, shift time by $\omega$ so that these equations hold for $t>0$
 \end{frame}
 
@@ -1313,8 +1307,7 @@ For a constant waning period, the basic reproduction number from
  (1-e^{-d\omega})}{d+\phi(1-e^{-d\omega})}
  \label{eq:Rphi}
 \end{equation}
-
-
+\vfill
 With $I_{DF}=0$, from Theorem~\ref{th:R0_gen_mod}
 \begin{equation}
  V_{DF}=\frac{(\phi+\alpha d)(1-e^{-d\omega})}{d+\phi(1-e^{-d\omega})}
@@ -1370,20 +1363,18 @@ to show the dependence on these parameters.
 \end{frame}
 
 \begin{frame}
-We proceed as follows.
+Proceed as follows
 \begin{enumerate}
-\item Choose a parameter $a_i\in\mathcal{A}$.
-\item Fix all other $a_j$'s ($j\neq i$).
-\item Choose $a_{i,min}$, $a_{i,max}$ and
- $\Delta a_i$ for $a_i$.
+\item Choose a parameter $a_i\in\mathcal{A}$
+\item Fix all other $a_j$'s ($j\neq i$)
+\item Choose $a_{i,min}$, $a_{i,max}$ and $\Delta a_i$ for $a_i$
 \item For all
   $a_{i,k}=a_{i,min}+k\Delta a_i$ ($k$
   such that $a_{i,k}\leq a_{i,max}$), compute
-  $I^\star$ such that $H(I^\star,a_{i,k})=0$. \label{point1}
+  $I^\star$ such that $H(I^\star,a_{i,k})=0$ \label{point1}
 \end{enumerate}
-Step~\ref{point1} is carried out using the {\sc MatLab} {\tt fzero}
-function.
-
+Step~\ref{point1} is carried out using the {\sc MatLab} {\tt fzero} function
+\vfill
 Further precision can be gained by showing that
 \[
 H(0)=\frac{\R_v-1}{(1-\sigma)\R_0}
@@ -1398,44 +1389,26 @@ d(1-e^{-d\omega-\sigma\beta\omega})}{\phi(1
 
 \begin{frame}
 Define $\R_c$ as previously. For $\R_0>1$ and
-$\R_v<1$, there are several possibilities.
+$\R_v<1$, there are several possibilities
 \begin{itemize}
 \item If $\R_v<\R_c$, then there is no EEP. $H(0)$ and $H(1)$
- are strictly negative, and numerical simulations seem to indicate
- that $H$ has no roots in $(0,1]$ (\emph{i.e.}, that $H<0$ on this
- interval).
+ are strictly negative, and numerical simulations seem to indicate that $H$ has no roots in $(0,1]$ (\emph{i.e.}, that $H<0$ on this interval)
 \item If $\R_c<\R_v<1$, then there are endemic equilibria.
- Here, since $H(0)$
- and $H(1)$ are strictly negative, the only possibility is thus to
- have an even number of zeros of $H$. Numerical simulations appear to
- indicate that the number of endemic equilibria is 2.
+ Here, since $H(0)$ and $H(1)$ are strictly negative, the only possibility is thus to have an even number of zeros of $H$. Numerical simulations appear to indicate that the number of endemic equilibria is 2
 \end{itemize}
-In between these two situations $\R_v=\R_c$ and there is
-one endemic equilibrium $I^\star$. Using the same procedure as for the
-visualisation of the bifurcation, it is possible to compute
-$\R_c$ by finding the value $I^\star$ such that
-$H(I^\star,\mathcal{A})=0$ and $H'(I^\star,\mathcal{A})=0$, for a given
-parameter $a_i\in\mathcal{A}$.
-
-If $\R_v>1$ then $H(0)>0$ and so there is an odd number of endemic
-equilibria. Numerical simulations indicate that there is a unique
-EEP.
+In between these two situations $\R_v=\R_c$ and there is one endemic equilibrium $I^\star$. Using the same procedure as for the visualisation of the bifurcation, it is possible to compute $\R_c$ by finding the value $I^\star$ such that
+$H(I^\star,\mathcal{A})=0$ and $H'(I^\star,\mathcal{A})=0$, for a given parameter $a_i\in\mathcal{A}$
+\vfill
+If $\R_v>1$ then $H(0)>0$ and so there is an odd number of endemic equilibria. Numerical simulations indicate that there is a unique EEP
 \end{frame}
 
 \begin{frame}\frametitle{Numerical bifurcation analysis}
 Same parameter values as in ODE case, except that the
-constant waning time
-(the delay) $\omega$ has to be substituted for $\theta$. We take
-$\omega=1825$, \emph{i.e.}, corresponding to a 5 years waning time
+constant waning time (the delay) $\omega$ has to be substituted for $\theta$. We take $\omega=1825$, \emph{i.e.}, corresponding to a 5 years waning time
 \vfill
-These parameters give $\R_0=8.3936$ and $\R_v(\phi)=0.8819$, which
-is in the range of the backward bifurcation since (using the above
-method) $\R_c(\phi)=0.8675$
+These parameters give $\R_0=8.3936$ and $\R_v(\phi)=0.8819$, which is in the range of the backward bifurcation since (using the above method) $\R_c(\phi)=0.8675$
 \vfill
-The bifurcation diagram is very like that depicted in
-earlier for the ODE. Numerical simulations of the DDE model
-(using {\tt dde23}) indicate that there are no additional
-bifurcations; solutions either go to the DFE or to the (larger) EEP
+The bifurcation diagram is very like that depicted in earlier for the ODE. Numerical simulations of the DDE model (using {\tt dde23}) indicate that there are no additional bifurcations; solutions either go to the DFE or to the (larger) EEP
 \end{frame}
 
 
@@ -1446,22 +1419,110 @@ bifurcations; solutions either go to the DFE or to the (larger) EEP
 (a) Values of $I^\star$ as a function of $\omega$ by solving $H(I,\mathcal{A})=0$ with $a_i=\omega$. (b) Value of $I(t)$ versus time, obtained by numerical integration of system \eqref{sys:SIVS_DDE} with initial data $I(t)=c$, for $t\in[-\omega,0]$, $\omega=1825$, $c$ varying from 0 to 1 by steps of 0.02
 \end{frame}
 
-
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-\subsection{Conclusion}
-
-\begin{frame}\frametitle{Conclusion}
-\begin{itemize}
-\item The time of sojourn in classes (compartments) plays an important role in determining the type of model that we deal with
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+\subsection{Age of vaccination}
+\begin{frame}\frametitle{Age of vaccination}
+We have seen that infinite dimensionality can result from a detailed description (or an unspecified one) of the sojourn time in compartments
 \vfill
-\item All ODE models, when they use terms of the form $\kappa X$, make the assumption that the time of sojourn in compartments is exponentially distributed
+We used age of vaccination to find the initial condition of \eqref{sys:SIVS_general}
+\vfill
+Here we take a closer look at this type of model
+\vfill
+Originally, age of infection was introduced to account for differences in infectivity depending on the time since an individual became infected
+\vfill
+For instance, it is known that infectiousness of HIV positive patients vary as a function of time
+\end{frame}
+
+
+
+\maxFrameImage{FIGS/BowmanArinoMoghadas-2011-cover.png}
+
+\begin{frame}{How to model time between vaccine doses}
+\begin{subequations}
+\begin{align}
+S\pprime &= -fS-V_1(t,0) \\
+A\pprime &= \left(
+(1-p)S+(1-p_1)\delta_1\tilde V_1+(1-p_2)\delta_2 V_2
+\right)f-\mu_AA \\
+I\pprime &= (pS+p_1\delta_1\tilde V_1+p_2\delta_2 V_2)f-\mu I \\
+V_2\pprime &= V_1(t,a^\star)-\delta_2fV_2(t)
+\end{align}
+\begin{equation}\label{eq:V1_age_time}
+\left(
+\frac{\partial}{\partial t}+\frac{\partial}{\partial a}
+\right) V_1(t,a) = -\delta_1fV_1(t,a),\quad 0\leq a\leq a^\star
+\end{equation}
+and boundary condition
+\begin{equation}
+V_1(t,0) = \begin{cases}
+\gamma S_0\left(\frac{S(t)}{S(t)+A(t)}\right) & \text{if } T\leq t\leq T_e \text{ and }S>0 \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation}
+\end{subequations}
+where $f=\beta(\delta_AA+I)$ and $\tilde V_1(t)=\int_0^{a^\star}V_1(t,a)da$
+\end{frame}
+
+\begin{frame}{Simplifying a bit}
+Integrate \eqref{eq:V1_age_time} using characteristics along lines $a=s$ and $t=T+s$, with $s$ as a new variable
+\begin{equation}\label{eq:V1_age_time_integrated}
+V_1(t,a)=V_1(t-a,0)\exp\left(\int_{t-a}^t -\delta_1f(\xi)\ d\xi\right)
+\end{equation}
+Define
+\[
+\zeta(t)=\int_0^t\delta_1f(\xi)d\xi
+\]
+and substitute into \eqref{eq:V1_age_time_integrated}, giving
+\[
+V_1(t,a)=V_1(t-a,0)\exp\left(\zeta(t-a)\zeta(t)\right)
+\]
+So the distributed delay is now discrete
+\end{frame}
+
+\begin{frame}{Simplifying a bit more}
+Let
+\[
+\nu(t)=\int_0^t V_1(s,0)e^{\zeta(s)}ds
+\]
+Then the total number of individuals having been vaccinated with a single dose is
+\[
+\tilde V_1(t)=e^{-\zeta(t)}
+\left(
+\nu(t)-\nu(t-a^\star)
+\right)
+\]
+\begin{subequations}
+\begin{align}
+S\pprime &= -fS-V_1(t,0) \\
+A\pprime &= \left(
+(1-p)S+(1-p_1)\delta_1\tilde V_1+(1-p_2)\delta_2 V_2
+\right)f-\mu_AA \\
+I\pprime &= (pS+p_1\delta_1\tilde V_1+p_2\delta_2 V_2)f-\mu I \\
+V_2\pprime &= V_1(t-a^\star,0)e^{\zeta(t-a^\star)}-\delta_2fV_2(t) \\
+\zeta\pprime &= \delta_1f \\
+\nu\pprime &= V_1(t,0)e^{\zeta(t)}
+\end{align}
+\end{subequations}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\subsection{Conclusions on sojourn times}
+
+\begin{frame}\frametitle{Conclusions on sojourn times}
+\begin{itemize}
+\item The time of sojourn in compartments plays an important role in determining the type of model that we deal with
+\vfill
+\item All ODE models, when they use terms of the form $\kappa X$, make the assumption that the time of sojourn in compartments is exponentially distributed with parameter $\kappa$
 \vfill
 \item At the other end of the spectrum, delay differential with discrete delay make the assumption of a constant sojourn time, equal for all individuals
 \vfill
-\item Both can be true sometimes.. but reality is more likely somewhere in between
+\item Both can be true sometimes... but reality is more likely somewhere in between
 \end{itemize}
 \end{frame}
 
@@ -1814,8 +1875,8 @@ S_10  81  64  49  36  25  16   9   4   1    0
         \begin{tabular}{c|c|c|}
             & Absorbing states & Transient states \\
             \hline
-            \defword{Absorbing states} & $\mathbb{I}_k$ & $\mathbf{0}$ \\
-            \defword{Transient states} & $R$ & $Q$ 
+            Absorbing states & $\mathbb{I}_k$ & $\mathbf{0}$ \\
+            Transient states & $R$ & $Q$ 
         \end{tabular}
     \end{center}
     \vfill
@@ -2613,8 +2674,8 @@ plot(sol$time, sol$state[,"I"], type = "l",
     \vfill
     On the GitHub repo for the course, see
     \begin{itemize}
-        \item \href{https://raw.githubusercontent.com/julien-arino/3MC-mathematical-modelling-in-biology/main/CODE/Julien/SIS_CTMC_parallel.R}{\code{SIS\_CTMC\_parallel.R}}
-        \item \href{https://raw.githubusercontent.com/julien-arino/3MC-mathematical-modelling-in-biology/main/CODE/Julien/SIS_CTMC_parallel_multiple_R0.R}{\code{SIS\_CTMC\_parallel\_multiple\_R0.R}}
+        \item \href{https://raw.githubusercontent.com/julien-arino/3MC-2024-02-Potch/main/julien/CODE/SIS-CTMC-parallel.R}{\code{SIS-CTMC-parallel.R}}
+        \item \href{https://raw.githubusercontent.com/julien-arino/3MC-2024-02-Potch/main/julien/CODE/SIS-CTMC-parallel-multiple-R0.R}{\code{SIS-CTMC-parallel-multiple-R0.R}}
     \end{itemize}
 \end{frame}
 
@@ -2756,82 +2817,6 @@ tictoc::toc()
 
 
 
-%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%
-\section{Age of infection/vaccination}
-\begin{frame}\frametitle{Age of infection/vaccination}
-We have seen that infinite dimensionality could result from a detailed description (or an unspecified one) of the sojourn time in compartments
-\vfill
-We used age of vaccination to find the initial condition of \eqref{sys:SIVS_general}
-\vfill
-Here we take a closer look at this type of model
-\vfill
-Originally, age of infection was introduced to account for differences in infectivity depending on the time since an individual became infected
-\vfill
-For instance, it is known that infectiousness of HIV positive patients vary as a function of time
-\end{frame}
-
-
-
-\maxFrameImage{FIGS/BowmanArinoMoghadas-2011-cover.png}
-
-\begin{frame}{How to model time between vaccine doses}
-\begin{subequations}
-\begin{align}
-S' &= -fS-V_1(t,0) \\
-A' &= \left(
-(1-p)S+(1-p_1)\delta_1\tilde V_1+(1-p_2)\delta_2 V_2
-\right)f-\mu_AA \\
-I' &= (pS+p_1\delta_1\tilde V_1+p_2\delta_2 V_2)f-\mu I \\
-V_2' &= V_1(t,a^\star)-\delta_2fV_2(t)
-\end{align}
-\begin{equation}\label{eq:V1_age_time}
-\left(
-\frac{\partial}{\partial t}+\frac{\partial}{\partial a}
-\right) V_1(t,a) = -\delta_1fV_1(t,a),\quad 0\leq a\leq a^\star
-\end{equation}
-and boundary condition
-\begin{equation}
-V_1(t,0) = \begin{cases}
-\gamma S_0\left(\frac{S(t)}{S(t)+A(t)}\right) & \text{if } T\leq t\leq T_e \text{ and }S>0 \\
-0 & \text{otherwise}
-\end{cases}
-\end{equation}
-\end{subequations}
-where $f=\beta(\delta_AA+I)$ and $\tilde V_1(t)=\int_0^{a^\star}V_1(t,a)da$
-\end{frame}
-
-\begin{frame}{Simplifying a bit}
-Integrate \eqref{eq:V1_age_time} using characteristics along lines $a=s$ and $t=T+s$, with $s$ as a new variable
-\begin{equation}\label{eq:V1_age_time_integrated}
-V_1(t,a)=V_1(t-a,0)\exp\left(\int_{t-a}^t -\delta_1f(\xi)\ d\xi\right)
-\end{equation}
-Define
-\[
-\zeta(t)=\int_0^t\delta_1f(\xi)d\xi
-\]
-and substitute into \eqref{eq:V1_age_time_integrated}, giving
-\[
-V_1(t,a)=V_1(t-a,0)\exp\left(\zeta(t-a)\zeta(t)\right)
-\]
-So the distributed delay is now discrete
-\end{frame}
-
-\begin{frame}{Simplifying a bit more}
-Let
-\[
-\nu(t)=\int_0^t V_1(s,0)e^{\zeta(s)}ds
-\]
-Then the total number of individuals having been vaccinated with a single dose is
-\[
-\tilde V_1(t)=e^{-\zeta(t)}
-\left(
-\nu(t)-\nu(t-a^\star)
-\right)
-\]
-\end{frame}
 %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%
