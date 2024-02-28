@@ -58,7 +58,7 @@ I have some "vignettes" about `R` [here](https://julien-arino.github.io/R-for-mo
 
 [Mathematical Oncology - A Diﬀerential Equation approach to Cancer Growth and Metastasis](nikos/Slides_Mathematical_Oncology_Sfakianakis.pdf)
 
-[Nikos' subdirectory](nikos/) also contains a variety of materiel. 
+[Nikos' subdirectory](https://github.com/julien-arino/3MC-2024-02-Potch/tree/main/nikos) also contains a variety of material (files, movies). 
 
 ### Slides Patrick
 
