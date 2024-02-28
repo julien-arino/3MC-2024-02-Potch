@@ -54,6 +54,12 @@ Please note that at present, the slides are work in progress. I will be updating
 
 I have some "vignettes" about `R` [here](https://julien-arino.github.io/R-for-modellers/). Beware, some of them are not finished yet.
 
+### Slides Nikos
+
+[Mathematical Oncology - A Diﬀerential Equation approach to Cancer Growth and Metastasis](nikos/Slides_Mathematical_Oncology_Sfakianakis.pdf)
+
+[Nikos' subdirectory](nikos/) also contains a variety of materiel. 
+
 ### Slides Patrick
 
 See the slides [here](assets/pdf/3MC_school_2024_Patrick.pdf).
