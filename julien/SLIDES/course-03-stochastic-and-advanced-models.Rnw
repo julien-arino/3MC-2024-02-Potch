@@ -393,7 +393,7 @@ $N(t)$ the cohort population at time $t\geq 0$
 N(t)=N_0P(t)
 \end{equation}
 \vfill
-$N_0P(t)$ proportion of initial population still alive at time $t$
+$P(t)$ proportion of initial population still alive at time $t$, so $N_0P(t)$ number in the cohort still alive at time $t$
 \end{frame}
 
 \begin{frame}\frametitle{Case where $T$ is exponentially distributed}
